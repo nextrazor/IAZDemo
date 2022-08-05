@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
         {
-            policy.WithOrigins("http://192.168.0.173:8000").
+            policy.WithOrigins("http://localhost:8000").
             AllowAnyHeader().
             AllowAnyMethod();
 
@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
         {
-            policy.WithOrigins("http://192.168.0.173:8000").
+            policy.WithOrigins("http://localhost:8000").
                               AllowAnyHeader().
                               AllowAnyMethod();
         });

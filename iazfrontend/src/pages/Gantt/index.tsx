@@ -1,9 +1,13 @@
 import React from "react";
-import { Task, ViewMode, Gantt } from "gantt-task-react";
+import { Task, ViewMode} from "../Gantt/src/types/public-types";
+
+import {Gantt } from "../Gantt/src/components/gantt/gantt";
 //import { ViewSwitcher } from "./components/view-switcher";
 import { getStartEndDateForProject, initTasks } from "./helper";
 import "gantt-task-react/dist/index.css";
+import { Button } from "antd";
 
+const axios = require('axios').default;
 // Init
 const App = () => {
   const [view, setView] = React.useState<ViewMode>(ViewMode.Day);
@@ -17,6 +21,8 @@ const App = () => {
   } else if (view === ViewMode.Week) {
     columnWidth = 250;
   }
+
+  
 
   const handleTaskChange = (task: Task) => {
     console.log("On date change Id:" + task.id);
@@ -35,6 +41,8 @@ const App = () => {
       }
     }
     setTasks(newTasks);
+
+    
   };
 
   const handleTaskDelete = (task: Task) => {
@@ -67,6 +75,23 @@ const App = () => {
     console.log("On expander click Id:" + task.id);
   };
 
+  const loadData = (event: React.MouseEvent<HTMLButtonElement>) =>{
+    axios(
+      {
+        method: 'get',
+        url: 'http://localhost:5166/ganttData'
+      })
+    .then(response => {
+      response.data.forEach(element => {
+        element.start = new Date(element.start);
+        element.end = new Date(element.end);
+      });
+      setTasks(response.data);
+    })
+  }
+
+
+  
   return (
     <div className="Wrapper">
       {/* <ViewSwitcher
@@ -75,6 +100,7 @@ const App = () => {
         isChecked={isChecked}
       /> */}
       <h3>Gantt With Unlimited Height</h3>
+      <Button onClick={loadData}>LoadData</Button>
       <Gantt
         tasks={tasks}
         viewMode={view}
