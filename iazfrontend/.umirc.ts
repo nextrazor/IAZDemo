@@ -33,7 +33,8 @@ export default defineConfig({
         name: ' Gantt',
         path: '/Gantt',
         component: './Gantt',
-    },{
+    },
+    {
       name: 'IAZ Users',
       path: '/Users',
       component: './Users',

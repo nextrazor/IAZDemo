@@ -1,4 +1,5 @@
 using DemoBackend.Models;
+using IAZBackend;
 using Microsoft.Net.Http.Headers;
 using System.Reflection;
 
@@ -76,6 +77,44 @@ app.MapGet("/additionalGroups", () =>
     return workers;
 })
 .WithName("GetAdditionalGroups");
+
+app.MapGet("/ganttData", () =>
+{
+    GanttData data = new GanttData();
+
+    data.Add(new IAZBackend.Project(
+            DateTime.Now,
+            DateTime.Now.AddDays(1),
+            "Project 1",
+            "P1",
+            30
+        ));
+
+    data.Add(new IAZBackend.Task(
+            DateTime.Now,
+            DateTime.Now.AddDays(1),
+            "Task 1",
+            "T1",
+            "P1",
+            new string[] { },
+            10,
+            false
+        ));
+
+    data.Add(new IAZBackend.Milestone(
+            DateTime.Now.AddDays(1),
+            DateTime.Now.AddDays(2),
+            "Milestone 1",
+            "M1",
+            "P1",
+            new string[] { "T1" },
+            40,
+            true
+        ));
+
+    return data.Result();
+})
+.WithName("GetGanttData");
 
 app.Run();
 
