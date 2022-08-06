@@ -33,28 +33,34 @@ export const GridBody: React.FC<GridBodyProps> = ({
       className={styles.gridRowLine}
     />,
   ];
+  var listNames: string[] = [];
   for (const task of tasks) {
-    gridRows.push(
-      <rect
-        key={"Row" + task.id}
-        x="0"
-        y={y}
-        width={svgWidth}
-        height={rowHeight}
-        className={styles.gridRow}
-      />
-    );
-    rowLines.push(
-      <line
-        key={"RowLine" + task.id}
-        x="0"
-        y1={y + rowHeight}
-        x2={svgWidth}
-        y2={y + rowHeight}
-        className={styles.gridRowLine}
-      />
-    );
-    y += rowHeight;
+    if (!listNames.includes("Row" + task.name)){
+      gridRows.push(
+        <rect
+          key={"Row" + task.name}
+          x="0"
+          y={y}
+          width={svgWidth}
+          height={rowHeight}
+          className={styles.gridRow}
+        />
+      );
+      rowLines.push(
+        <line
+          key={"RowLine" + task.name}
+          x="0"
+          y1={y + rowHeight}
+          x2={svgWidth}
+          y2={y + rowHeight}
+          className={styles.gridRowLine}
+        />
+      );
+      y += rowHeight;
+
+      listNames.push("Row" + task.id);
+    }
+    
   }
 
   const now = new Date();

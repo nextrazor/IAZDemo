@@ -2,6 +2,19 @@ import { Task } from "../types/public-types";
 import { BarTask, TaskTypeInternal } from "../types/bar-task";
 import { BarMoveAction } from "../types/gantt-task-actions";
 
+var resources = { };
+//"task" | "milestone" | "project";
+const resourceIndexer = (t:Task) =>{
+  switch (t.type){
+    case "task":
+      return 1;
+    case "milestone":
+      return 2;
+    case "project":
+    return 3;
+  }
+}
+
 export const convertToBarTasks = (
   tasks: Task[],
   dates: Date[],
@@ -23,9 +36,10 @@ export const convertToBarTasks = (
   milestoneBackgroundSelectedColor: string
 ) => {
   let barTasks = tasks.map((t, i) => {
+
     return convertToBarTask(
       t,
-      i,
+      resourceIndexer(t),
       dates,
       columnWidth,
       rowHeight,

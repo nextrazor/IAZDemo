@@ -84,7 +84,7 @@ app.MapGet("/ganttData", () =>
 
     data.Add(new IAZBackend.Project(
             DateTime.Now,
-            DateTime.Now.AddDays(1),
+            DateTime.Now.AddDays(3),
             "Project 1",
             "P1",
             30
@@ -101,13 +101,24 @@ app.MapGet("/ganttData", () =>
             false
         ));
 
-    data.Add(new IAZBackend.Milestone(
+    data.Add(new IAZBackend.Task(
             DateTime.Now.AddDays(1),
             DateTime.Now.AddDays(2),
+            "Task 1",
+            "T2",
+            "P1",
+            new string[] { "T1"},
+            10,
+            false
+        ));
+
+    data.Add(new IAZBackend.Milestone(
+            DateTime.Now.AddDays(2),
+            DateTime.Now.AddDays(3),
             "Milestone 1",
             "M1",
             "P1",
-            new string[] { "T1" },
+            new string[] { "T2" },
             40,
             true
         ));

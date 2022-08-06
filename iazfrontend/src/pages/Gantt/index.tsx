@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useEffect } from 'react';
 import { Task, ViewMode} from "../Gantt/src/types/public-types";
 
 import {Gantt } from "../Gantt/src/components/gantt/gantt";
@@ -8,6 +9,7 @@ import "gantt-task-react/dist/index.css";
 import { Button } from "antd";
 
 const axios = require('axios').default;
+
 // Init
 const App = () => {
   const [view, setView] = React.useState<ViewMode>(ViewMode.Day);
@@ -21,8 +23,6 @@ const App = () => {
   } else if (view === ViewMode.Week) {
     columnWidth = 250;
   }
-
-  
 
   const handleTaskChange = (task: Task) => {
     console.log("On date change Id:" + task.id);
@@ -90,7 +90,7 @@ const App = () => {
     })
   }
 
-
+  
   
   return (
     <div className="Wrapper">
