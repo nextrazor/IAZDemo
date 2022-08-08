@@ -24,6 +24,6 @@ namespace IAZBackend.Models.ApsEntities
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>
-            dbContextOptionsBuilder.UseSqlServer("Server=N-PLM052;Database=IAZ Preactor;Trusted_Connection=True;");
+            dbContextOptionsBuilder.UseSqlServer("Server=DESKTOP-30L35AH\\SQLEXPRESS;Database=IAZ Preactor;Trusted_Connection=True;");
     }
 }

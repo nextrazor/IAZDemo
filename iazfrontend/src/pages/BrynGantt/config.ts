@@ -1,0 +1,29 @@
+import { BryntumSchedulerProProps } from '@bryntum/schedulerpro-react';
+
+const schedulerProConfig: BryntumSchedulerProProps = {
+    startDate  : '2022-03-23',
+    endDate    : '2022-03-24',
+    viewPreset : 'hourAndDay',
+    forceFit   : true,
+    columns    : [
+        {
+            type           : 'resourceInfo',
+            text           : 'Name',
+            field          : 'name',
+            showEventCount : false,
+            width          : 150
+        }
+    ],
+
+    // Project using inline data
+    project : {
+        // autoLoad: true,
+        transport : {
+            load : {
+                url : 'http://localhost:5166/ganttData'
+            }
+        }
+    }
+};
+
+export { schedulerProConfig };

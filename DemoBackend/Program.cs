@@ -14,12 +14,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
-{
+{   
     options.AddDefaultPolicy(policy =>
         {
             policy.WithOrigins("http://localhost:8000").
             AllowAnyHeader().
-            AllowAnyMethod();
+            AllowAnyMethod().AllowCredentials();
 
         });
 
@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:8000").
                               AllowAnyHeader().
-                              AllowAnyMethod();
+                              AllowAnyMethod().AllowCredentials();
         });
 });
 
@@ -115,7 +115,6 @@ app.MapGet("/ganttData", () =>
     //        40,
     //        true
     //    ));
-
     return data.Result();
 })
 .WithName("GetGanttData");
