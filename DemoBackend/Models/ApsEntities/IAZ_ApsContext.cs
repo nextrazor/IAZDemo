@@ -7,6 +7,7 @@ namespace IAZBackend.Models.ApsEntities
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Dataset> Orders_Dataset { get; set; } = null!;
         public DbSet<OrderLink> OrderLinks { get; set; } = null!;
+        public DbSet<Resource> Resources { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,11 @@ namespace IAZBackend.Models.ApsEntities
                 .HasOne(link => link.ToOrder)
                 .WithMany()
                 .HasForeignKey(link => link.ToInternalDemandOrder);
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(link => link.AssignedResource)
+                .WithMany()
+                .HasForeignKey(link => link.Resource);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>

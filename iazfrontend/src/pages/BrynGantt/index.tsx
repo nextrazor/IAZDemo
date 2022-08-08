@@ -13,6 +13,9 @@ const App: FunctionComponent = () => {
   const schedulerProRef = useRef<BryntumSchedulerPro>(null);
   const schedulerProInstance = () => schedulerProRef.current?.instance as SchedulerPro;
 
+  
+
+
   useEffect(() => {
       // This shows loading data
       // To load data automatically configure project with `autoLoad : true`

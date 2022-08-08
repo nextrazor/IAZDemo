@@ -1,9 +1,7 @@
 import { BryntumSchedulerProProps } from '@bryntum/schedulerpro-react';
 
 const schedulerProConfig: BryntumSchedulerProProps = {
-    startDate  : '2022-03-23',
-    endDate    : '2022-03-24',
-    viewPreset : 'hourAndDay',
+    
     forceFit   : true,
     columns    : [
         {

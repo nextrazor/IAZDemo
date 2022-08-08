@@ -86,35 +86,8 @@ app.MapGet("/ganttData", () =>
     foreach (IGanttElement apsTask in GetApsTasks("Schedule"))
         data.Add(apsTask);
 
-    //data.Add(new IAZBackend.Project(
-    //        DateTime.Now,
-    //        DateTime.Now.AddDays(1),
-    //        "Project 1",
-    //        "P1",
-    //        30
-    //    ));
+    data.Add(GetApsResources());
 
-    //data.Add(new IAZBackend.Task(
-    //        DateTime.Now,
-    //        DateTime.Now.AddDays(1),
-    //        "Task 1",
-    //        "T1",
-    //        "P1",
-    //        new string[] { },
-    //        10,
-    //        false
-    //    ));
-
-    //data.Add(new IAZBackend.Milestone(
-    //        DateTime.Now.AddDays(1),
-    //        DateTime.Now.AddDays(2),
-    //        "Milestone 1",
-    //        "M1",
-    //        "P1",
-    //        new string[] { "T1" },
-    //        40,
-    //        true
-    //    ));
     return data.Result();
 })
 .WithName("GetGanttData");
@@ -127,9 +100,17 @@ IEnumerable<IGanttElement> GetApsTasks(string datasetName)
             throw new ApplicationException($"Dataset '{datasetName}' not found");
         return dbContext.Orders
             .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue))
-            .Select(ord => new IAZBackend.Task(ord.StartTime.Value, ord.EndTime.Value, ord.ToString(), ord.OrdersId.ToString(), "Project",
+            .Select(ord => new IAZBackend.Task(ord.StartTime.Value, ord.EndTime.Value, ord.ToString(), ord.OrdersId, ord.Resource, "Project",
                 new string[] {}, Convert.ToInt32(ord.MidBatchQuantity * 100 / ord.Quantity), false))
             .ToArray();
+    }
+}
+
+IAZBackend.Resource[] GetApsResources()
+{
+    using (IAZ_ApsContext dbContext = new IAZ_ApsContext())
+    {
+        return dbContext.Resources.Select(el => new IAZBackend.Resource(el.ResourcesId, el.Name)).ToArray();
     }
 }
 
