@@ -16,6 +16,8 @@ namespace IAZBackend.Models.ApsEntities
         public double MidBatchQuantity { get; set; }
         public int DatasetId { get; set; }
         public Dataset Dataset { get; set; } = null!;
+        public int Resource { get; set; }
+        public Resource AssignedResource { get; set; } = null!;
 
         public override string ToString()
         {

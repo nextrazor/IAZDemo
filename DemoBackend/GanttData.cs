@@ -5,27 +5,39 @@ namespace IAZBackend
     public enum GantElementType { task, milestone, project }
     public class GanttData
     {
+        List<Resource> resources = new List<Resource>();
+
         List<IGanttElement> ganttElements = new List<IGanttElement>();
 
         public string Result() {
-            string buffer = "[";
-            ganttElements.ForEach(el=> {
+            string resourcesBuffer = "\"resources\" :  { \"rows\": [";
+            resources.ToList().ForEach(el => {
+                resourcesBuffer += JsonConvert.SerializeObject(el) + ", ";
+            });
+            resourcesBuffer = resourcesBuffer.Remove(resourcesBuffer.Length - 2, 1);
+            resourcesBuffer += "] } ";
+
+
+            string elementsBuffer = "\"events\" : { \"rows\": [";
+            ganttElements.ToList().ForEach(el=> {
                 switch (el.type)
                 {
                     case "milestone":
-                        buffer += JsonConvert.SerializeObject((Milestone)el) + ", ";
+                        elementsBuffer += JsonConvert.SerializeObject((Milestone)el) + ", ";
                         break;
                     case "project":
-                        buffer += JsonConvert.SerializeObject((Project)el) + ", ";
+                        elementsBuffer += JsonConvert.SerializeObject((Project)el) + ", ";
                         break;
                     case "task":
-                        buffer += JsonConvert.SerializeObject((Task)el) + ", ";
+                        elementsBuffer += JsonConvert.SerializeObject((Task)el) + ", ";
                         break;
                 }
             });
-            buffer = buffer.Remove(buffer.Length - 2, 1);
-            buffer += "]";
-            return buffer;
+            elementsBuffer = elementsBuffer.Remove(elementsBuffer.Length - 2, 1);
+            elementsBuffer += "] } ";
+
+
+            return "{ " + resourcesBuffer + " , " + elementsBuffer + " }";
         } 
 
         public void Add(IGanttElement ganttElement)
@@ -33,15 +45,32 @@ namespace IAZBackend
             ganttElement.displayOrder = ganttElements.Count();
             ganttElements.Add(ganttElement);
         }
+
+        public void Add(Resource[] res)
+        {
+            resources.AddRange(res);
+        }
+    }
+
+    public class Resource
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+
+        public Resource(int id, string name)
+        {
+            this.id = id;
+            this.name = name;
+        }
     }
 
     public interface IGanttElement
     {
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
 
         public string name { get; set; }
-        public string id { get; set; }
+        public int id { get; set; }
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
@@ -53,18 +82,18 @@ namespace IAZBackend
     [Serializable]
     public class Project : IGanttElement
     {
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public string name { get; set; }
-        public string id { get; set; }
+        public int id { get; set; }
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
 
-        public Project(DateTime start, DateTime end, string name, string id, int progress)
+        public Project(DateTime start, DateTime end, string name, int id, int progress)
         {
-            this.start = start;
-            this.end = end;
+            this.startDate = start;
+            this.endDate = end;
             this.name = name;
             this.id = id;
             type = GantElementType.project.ToString();
@@ -82,10 +111,11 @@ namespace IAZBackend
     [Serializable]
     public class Task : IGanttElement
     {
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public string name { get; set; }
-        public string id { get; set; }
+        public int id { get; set; }
+        public int resourceId { get; set; }
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
@@ -94,12 +124,13 @@ namespace IAZBackend
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Task(DateTime start, DateTime end, string name, string id, string project, string[] dependencies, int progress, bool isDisabled)
+        public Task(DateTime start, DateTime end, string name, int id, int resourceId, string project, string[] dependencies, int progress, bool isDisabled)
         {
-            this.start = start;
-            this.end = end;
+            this.startDate = start;
+            this.endDate = end;
             this.name = name;
             this.id = id;
+            this.resourceId = resourceId;
             type = GantElementType.task.ToString();
             this.project = project;
             this.dependencies = dependencies;
@@ -118,10 +149,10 @@ namespace IAZBackend
     [Serializable]
     public class Milestone : IGanttElement
     {
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public string name { get; set; }
-        public string id { get; set; }
+        public int id { get; set; }
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
@@ -130,10 +161,10 @@ namespace IAZBackend
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Milestone(DateTime start, DateTime end, string name, string id, string project, string[]? dependencies, int progress, bool isDisabled)
+        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[]? dependencies, int progress, bool isDisabled)
         {
-            this.start = start;
-            this.end = end;
+            this.startDate = start;
+            this.endDate = end;
             this.name = name;
             this.id = id;
             type = GantElementType.milestone.ToString();

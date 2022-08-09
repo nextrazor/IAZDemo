@@ -35,6 +35,11 @@ export default defineConfig({
         component: './Gantt',
     },
     {
+        name: 'New Gantt',
+        path: '/BrynGantt',
+        component: './BrynGantt',
+    },
+    {
       name: 'IAZ Users',
       path: '/Users',
       component: './Users',
