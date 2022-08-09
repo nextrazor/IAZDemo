@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using IAZBackend.Config;
 
 namespace IAZBackend.Models.ApsEntities
 {
     public sealed class IAZ_ApsContext: DbContext
     {
+        private ConfigLoader config = new ConfigLoader();
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Dataset> Orders_Dataset { get; set; } = null!;
         public DbSet<OrderLink> OrderLinks { get; set; } = null!;
@@ -24,6 +26,6 @@ namespace IAZBackend.Models.ApsEntities
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>
-            dbContextOptionsBuilder.UseSqlServer("Server=N-PLM052;Database=IAZ Preactor;Trusted_Connection=True;");
+            dbContextOptionsBuilder.UseSqlServer($"Server={config.SqlServer};Database=IAZ Preactor;Trusted_Connection=True;");
     }
 }
