@@ -1,5 +1,6 @@
 using DemoBackend.Models;
 using IAZBackend;
+using IAZBackend.Config;
 using IAZBackend.Models.ApsEntities;
 using Microsoft.Net.Http.Headers;
 using System.Reflection;
@@ -7,6 +8,8 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+var config = new ConfigLoader();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
