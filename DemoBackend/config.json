@@ -1,1 +1,1 @@
-{"sqlServer":"DESKTOP-30L35AH\\SQLEXPRESS"}
+{"sqlServer":"---Enter server name---","policyName":"---Enter Polycy Name--- Default:_myAllowSpecificOrigins","allowedURL":"---Enter URL--- Default:http://localhost:8000"}

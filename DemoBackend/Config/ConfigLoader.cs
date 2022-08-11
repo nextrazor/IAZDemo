@@ -26,7 +26,7 @@ namespace IAZBackend.Config
 
             try
             {
-                PropertyInfo property = type.GetProperty(field) ?? throw new Exception($"Missing property \"{field}\" in ConfigurationData");
+                FieldInfo property = type.GetField(field) ?? throw new Exception($"Missing property \"{field}\" in ConfigurationData");
                 object valueObj = property.GetValue(data) ?? throw new Exception($"Config file error, check {field} in {filePath}");
                 string value = valueObj.ToString() ?? throw new Exception($"Config file error, check {field} in {filePath}");
 
@@ -54,7 +54,8 @@ namespace IAZBackend.Config
                 data.sqlServer = configTextPalaceholder["sqlServer"];
                 data.allowedURL = configTextPalaceholder["allowedURL"];
                 data.policyName = configTextPalaceholder["policyName"];
-                File.WriteAllText(filePath, JsonConvert.SerializeObject(data));
+                string json = JsonConvert.SerializeObject(data);
+                File.WriteAllText(filePath, json);
             }
         }
     }
