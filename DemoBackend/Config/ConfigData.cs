@@ -3,6 +3,8 @@
     [Serializable]
     public class ConfigData
     {
-        public string sqlServer;
+        public string sqlServer = null!;
+        public string policyName = null!;
+        public string allowedURL = null!;
     }
 }

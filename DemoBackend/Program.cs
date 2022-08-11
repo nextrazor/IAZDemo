@@ -5,40 +5,24 @@ using IAZBackend.Models.ApsEntities;
 using Microsoft.Net.Http.Headers;
 using System.Reflection;
 
-var builder = WebApplication.CreateBuilder(args);
-
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
+//Configuration
 var config = new ConfigLoader();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Builder
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddCors(options =>
 {   
-    options.AddDefaultPolicy(policy =>
-        {
-            policy.WithOrigins("http://localhost:8000").
-            AllowAnyHeader().
-            AllowAnyMethod().AllowCredentials();
-
-        });
-
-    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
-        {
-            policy.WithOrigins("http://localhost:8000").
-                              AllowAnyHeader().
-                              AllowAnyMethod().AllowCredentials();
-        });
+    options.AddDefaultPolicy(policy => { policy.WithOrigins(config.AllowedURL).AllowAnyHeader().AllowAnyMethod().AllowCredentials(); });
+    options.AddPolicy(name: config.PolicyName, policy => { policy.WithOrigins(config.AllowedURL).AllowAnyHeader().AllowAnyMethod().AllowCredentials(); });
 });
 
+// App
 var app = builder.Build();
-
-app.UseCors(MyAllowSpecificOrigins);
-
-var context = new IAZ_PBDContext();
+app.UseCors(config.PolicyName);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -47,38 +31,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-       new WeatherForecast
-       (
-           DateTime.Now.AddDays(index),
-           Random.Shared.Next(-20, 55),
-           summaries[Random.Shared.Next(summaries.Length)]
-       ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.MapGet("/workers", () =>   
 {
-    var workers = context.WorkersDemoData.ToArray();
+    using (IAZ_PBDContext dbContext = new IAZ_PBDContext())
+    {
+        var workers = dbContext.WorkersDemoData.ToArray();
 
-    return workers;
+        return workers;
+    }
 })
 .WithName("GetWorkers");
 
 app.MapGet("/additionalGroups", () =>
 {
-    var workers = context.AdditionalGroups.ToArray();
+    using (IAZ_PBDContext dbContext = new IAZ_PBDContext())
+    {
+        var workers = dbContext.AdditionalGroups.ToArray();
 
-    return workers;
+        return workers;
+    }
 })
 .WithName("GetAdditionalGroups");
 
@@ -101,6 +72,7 @@ IEnumerable<IGanttElement> GetApsTasks(string datasetName)
     {
         Dataset dataset = dbContext.Orders_Dataset.FirstOrDefault(ds => ds.Name == datasetName) ??
             throw new ApplicationException($"Dataset '{datasetName}' not found");
+
         return dbContext.Orders
             .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue))
             .Select(ord => new IAZBackend.Task(ord.StartTime.Value, ord.EndTime.Value, ord.ToString(), ord.OrdersId, ord.Resource, "Project",
@@ -118,8 +90,3 @@ IAZBackend.Resource[] GetApsResources()
 }
 
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

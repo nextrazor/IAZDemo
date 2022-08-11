@@ -7,8 +7,18 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
-  },
+     title: '@umijs/max2',
+     navTheme: 'dark',
+     primaryColor: '#1890ff',
+     layout: 'side',
+     contentWidth: 'Fluid',
+     fixedHeader: false,
+     fixSiderbar: true,
+     pwa: false,
+     logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+     headerHeight: 48,
+     splitMenus: false
+   },
   routes: [
     {
       path: '/',
@@ -43,8 +53,12 @@ export default defineConfig({
       name: 'IAZ Users',
       path: '/Users',
       component: './Users',
-  },
+    },
+    {
+      name: 'Main Dashboard',
+      path: '/MainDashboard',
+      component: './MainDashboard',
+    },
   ],
   npmClient: 'npm',
 });
-
