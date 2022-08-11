@@ -1,8 +1,9 @@
-using DemoBackend.Models;
+﻿using DemoBackend.Models;
 using IAZBackend;
 using IAZBackend.Config;
 using IAZBackend.Models.ApsEntities;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using System.Reflection;
 
 //Configuration
@@ -30,6 +31,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapGet("/testData", () =>
+{
+    var workers = new FrontendData[] { new FrontendData("Сифилис", 1), new FrontendData("Гонорея", 2), new FrontendData("Китайские AirPods", 2) };
+    var devLoad = new FrontendData[] { new FrontendData("Китайский", 3), new FrontendData("Нытье", 9), new FrontendData("Непонимание", 9), new FrontendData("Прогресс", 1) };
+
+    return JsonConvert.SerializeObject(new Response(workers, devLoad));
+})
+.WithName("GetTestData");
 
 app.MapGet("/workers", () =>   
 {
