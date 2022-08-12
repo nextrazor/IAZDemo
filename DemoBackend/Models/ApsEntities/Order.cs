@@ -9,6 +9,7 @@ namespace IAZBackend.Models.ApsEntities
         public int OrdersId { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public DateTime? DueDate { get; set; }
         public string OrderNo { get; set; } = string.Empty;
         public string OperationName { get; set; } = string.Empty;
         public int OpNo { get; set; }

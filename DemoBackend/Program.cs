@@ -62,7 +62,13 @@ app.MapGet("/testData", () =>
         new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CAE2"), "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
 
-    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
+    //KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
+    KpiPageData kpiData = new KpiPageData(
+        KpiController.GetLateOrders(),
+        KpiController.GetLateOpers(),
+        KpiController.GetMonthOee(KpiController.GetEarliestStart()),
+        KpiController.GetLoadingData(KpiController.GetEarliestStart()),
+        ppData);
 
     return kpiData.GetJson();
 })
