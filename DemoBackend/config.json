@@ -1,1 +1,5 @@
-{"sqlServer":"---Enter server name---","policyName":"---Enter Polycy Name--- Default:_myAllowSpecificOrigins","allowedURL":"---Enter URL--- Default:http://localhost:8000"}
+{
+  "sqlServer": "N-PLM052",
+  "policyName": "_myAllowSpecificOrigins",
+  "allowedURL": "http://localhost:8000"
+}

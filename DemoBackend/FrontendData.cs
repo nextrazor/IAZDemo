@@ -1,26 +1,28 @@
-﻿namespace IAZBackend
+﻿using Newtonsoft.Json;
+
+namespace IAZBackend
 {
     [Serializable]
-    public class Response
+    public abstract class PageData
     {
-        public AnalysisData data;
-
-        public Response(FrontendData[] data, FrontendData[] data2)
-        {
-            this.data = new AnalysisData(data, data2);
-        }
+        public abstract string GetJson();
     }
 
     [Serializable]
-    public class AnalysisData
+    public class AnalisysPiesData : PageData
     {
         public FrontendData[] dataSet;
         public FrontendData[] dataSet2;
 
-        public AnalysisData(FrontendData[] data, FrontendData[] data2)
+        public AnalisysPiesData(FrontendData[] data, FrontendData[] data2)
         {
             dataSet = data;
             dataSet2 = data2;
+        }
+
+        public override string GetJson()
+        {
+            return $"{{\"data\": {JsonConvert.SerializeObject(this)}}}";
         }
     }
 

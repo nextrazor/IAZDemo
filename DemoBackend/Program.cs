@@ -37,7 +37,9 @@ app.MapGet("/testData", () =>
     var workers = new FrontendData[] { new FrontendData("Сифилис", 1), new FrontendData("Гонорея", 2), new FrontendData("Китайские AirPods", 2) };
     var devLoad = new FrontendData[] { new FrontendData("Китайский", 3), new FrontendData("Нытье", 9), new FrontendData("Непонимание", 9), new FrontendData("Прогресс", 1) };
 
-    return JsonConvert.SerializeObject(new Response(workers, devLoad));
+    AnalisysPiesData piesData = new AnalisysPiesData(workers, devLoad);
+
+    return piesData.GetJson();
 })
 .WithName("GetTestData");
 

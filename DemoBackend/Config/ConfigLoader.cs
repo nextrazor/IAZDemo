@@ -35,7 +35,7 @@ namespace IAZBackend.Config
                 else if (value == configTextPalaceholder[field])
                     throw new Exception($"Enter {field} in {filePath}");
                 else 
-                    return data.sqlServer;
+                    return value;
             }
             catch
             {
