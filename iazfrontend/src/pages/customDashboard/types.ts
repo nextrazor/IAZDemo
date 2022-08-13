@@ -25,24 +25,11 @@ export interface RangeData {
 }
 
 export interface PlotData {
-  data: PlotElement[];
-}
-
-export interface PlotElement {
-  machineName: string;
-  loadingCategory: string;
-  value: number;
+  data: DataItem[];
 }
 
 export interface PainPointsData {
-  Data: PainPointsElements[];
-}
-
-export interface PainPointsElements {
-  guid: string;
-  category: string;
-  severity: number;
-  message: string;
+  data: DataItem[];
 }
 
 export type ExampleData = {
@@ -54,6 +41,12 @@ export type AnalysisProps = {
   data: DataItem[];
   loading: boolean;
   title: string;
+};
+
+export type ColumnProps = {
+  loading: boolean;
+  title: string;
+  data: DataItem[];
 };
 
 export type GaugeProps = {

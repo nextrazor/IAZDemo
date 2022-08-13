@@ -35,11 +35,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/testData", () =>
 {
-    var workers = new NamedValue[] { new NamedValue("Сифилис", 1), new NamedValue("Гонорея", 2), new NamedValue("Китайские AirPods", 2) };
-    var devLoad = new NamedValue[] { new NamedValue("Китайский", 3), new NamedValue("Нытье", 9), new NamedValue("Непонимание", 9), new NamedValue("Прогресс", 1) };
-
-    var lateOrders = new NamedValue[] { new NamedValue("В срок", 0.8), new NamedValue("Со срывом срока", 0.12), new NamedValue("Не спланированы", 0.8) };
-    var lateOpers = new NamedValue[] { new NamedValue("В срок", 0.9), new NamedValue("Со срывом срока", 0.6), new NamedValue("Не спланированы", 0.4) };
+    var lateOrders = new NamedValue[] { new NamedValue("В срок", 0.8), new NamedValue("Со срывом срока", 0.12), new NamedValue("Не спланированы", 0.08) };
+    var lateOpers = new NamedValue[] { new NamedValue("В срок", 0.9), new NamedValue("Со срывом срока", 0.06), new NamedValue("Не спланированы", 0.04) };
     var machNames = new string[]
     {
         "1696_Центр фрезерный обрабатывающий с ЧПУ",
@@ -56,10 +53,10 @@ app.MapGet("/testData", () =>
     };
     var ppData = new PainPoint[]
     {
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", "Оборудование", PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", "Оборудование", PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", "Заказ", PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", new string[] { "Заказ", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", new string[] { "Заказ", PainPointSeverity.Normal.ToString() }, PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
 
     KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
@@ -79,10 +76,10 @@ app.MapGet("/realData", () =>
     };
     var ppData = new PainPoint[]
     {
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", "Оборудование", PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", "Оборудование", PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", "Заказ", PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", new string[] { "Заказ", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", new string[] { "Заказ", PainPointSeverity.Normal.ToString() }, PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
 
     KpiPageData kpiData = new KpiPageData(

@@ -6,7 +6,9 @@ import { testData } from './dataLoader';
 
 import PieCard from './components/PieCard';
 import GaugeCard from './components/GaugeCard';
-import { OeeGauge } from './types';
+import ColumnCard from './components/ColumnCard';
+import TableCard from './components/TableCard';
+import type { OeeGauge } from './types';
 
 type AnalysisProps = {
   loading: boolean;
@@ -48,9 +50,16 @@ const CustomDash: FC<AnalysisProps> = () => {
         }}
       >
         <Col xl={12} lg={24} md={24} sm={24} xs={24}>
-          <PieCard
-            title="Загрузка программиста"
-            data={data?.lateOpers.data || []}
+          <TableCard
+            title="Загрузка ресурсов"
+            data={data?.painPoints.data || []}
+            loading={loading}
+          />
+        </Col>
+        <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+          <ColumnCard
+            title="Загрузка ресурсов"
+            data={data?.loadingPlot.data || []}
             loading={loading}
           />
         </Col>
