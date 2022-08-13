@@ -12,13 +12,13 @@ namespace IAZBackend.FrontendData
     [Serializable]
     public class GaugePlotData
     {
-        public double Percent;
-        public GaugeRange Range = null!;
+        public double percent;
+        public GaugeRange range = null!;
 
         public GaugePlotData(double percent, GaugeRange range)
         {
-            Percent = percent;
-            Range = range;
+            this.percent = percent;
+            this.range = range;
         }
     }
 

@@ -3,17 +3,17 @@
     [Serializable]
     public class PainPoint
     {
-        public Guid Guid;
-        public string Category = null!;
-        public PainPointSeverity Severity;
-        public string Message = null!;
+        public string guid;
+        public string category = null!;
+        public PainPointSeverity severity;
+        public string message = null!;
 
-        public PainPoint(Guid guid, string category, PainPointSeverity severity, string message)
+        public PainPoint(string guid, string category, PainPointSeverity severity, string message)
         {
-            Guid = guid;
-            Category = category;
-            Severity = severity;
-            Message = message;
+            this.guid = guid;
+            this.category = category;
+            this.severity = severity;
+            this.message = message;
         }
     }
 

@@ -9,11 +9,11 @@
     [Serializable]
     public class PainPointData
     {
-        public PainPoint[] Data;
+        public PainPoint[] data;
 
         public PainPointData(PainPoint[] data)
         {
-            Data = data;
+            this.data = data;
         }
     }
 }

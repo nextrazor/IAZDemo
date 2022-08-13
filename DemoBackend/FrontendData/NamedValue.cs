@@ -3,13 +3,13 @@
     [Serializable]
     public class NamedValue
     {
-        public string Name;
-        public double Value;
+        public string name;
+        public double value;
 
         public NamedValue(string name, double value)
         {
-            Name = name;
-            Value = value;
+            this.name = name;
+            this.value = value;
         }
     }
 }

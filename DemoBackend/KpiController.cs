@@ -24,10 +24,11 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-            IEnumerable<Order> lastOpers = dbContext.Orders
+            var lastOpers = dbContext.Orders
                 .Where(ord => ord.DatasetId == scheduleDsId)
                 .GroupBy(ord => ord.OrderNo)
-                .Select(og => og.OrderByDescending(op => op.OpNo).First());
+                .Select(og => og.OrderByDescending(op => op.OpNo).First())
+                .AsEnumerable();
             int goodOrders = lastOpers
                 .Where(op => op.EndTime.HasValue && (!op.DueDate.HasValue || (op.EndTime!.Value <= op.DueDate!.Value)))
                 .Count();
@@ -65,9 +66,10 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-            IEnumerable<Order> orders = dbContext.Orders
+            var orders = dbContext.Orders
                 .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.AssignedResource != null) && (ord.AssignedResource.FiniteOrInfinite == (int)ResourceType.Finite) &&
-                    (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime));
+                    (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
+                .AsEnumerable();
             if (!orders.Any())
                 return 0;
             int resCount = orders.Select(ord => ord.Resource).Distinct().Count();
@@ -87,10 +89,15 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-            IEnumerable<IGrouping<Resource, Order>> orderGroups = (IEnumerable<IGrouping<Resource, Order>>)dbContext.Orders
+
+            Order? x = dbContext.Orders.FirstOrDefault(ord => ord.Resource > 0);
+
+            var orderGroups = dbContext.Orders
                 .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.AssignedResource != null) && (ord.AssignedResource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
-                .GroupBy(ord => ord.AssignedResource);
+                .AsEnumerable()
+                .GroupBy(ord => ord.AssignedResource)
+                .ToArray();
             LoadingValue[] result = new LoadingValue[orderGroups.Count() * 2];
             int i = 0;
             foreach (var group in orderGroups)

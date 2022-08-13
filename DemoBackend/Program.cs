@@ -56,10 +56,10 @@ app.MapGet("/testData", () =>
     };
     var ppData = new PainPoint[]
     {
-        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CFE2"), "Оборудование", PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
-        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CDE2"), "Оборудование", PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
-        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CCE2"), "Заказ", PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
-        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CAE2"), "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", "Оборудование", PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", "Оборудование", PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", "Заказ", PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
+        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
 
     KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
@@ -139,8 +139,8 @@ IEnumerable<IGanttElement> GetApsTasks(string datasetName)
             throw new ApplicationException($"Dataset '{datasetName}' not found");
 
         return dbContext.Orders
-            .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue))
-            .Select(ord => new IAZBackend.Task(ord.StartTime!.Value, ord.EndTime!.Value, ord.ToString(), ord.OrdersId, ord.Resource, "Project",
+            .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue) && (ord.Resource.HasValue))
+            .Select(ord => new IAZBackend.Task(ord.StartTime!.Value, ord.EndTime!.Value, ord.ToString(), ord.OrdersId, ord.Resource!.Value, "Project",
                 new string[] {}, Convert.ToInt32(ord.MidBatchQuantity * 100 / ord.Quantity), false))
             .ToArray();
     }

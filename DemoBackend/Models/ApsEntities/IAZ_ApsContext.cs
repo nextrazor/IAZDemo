@@ -26,9 +26,9 @@ namespace IAZBackend.Models.ApsEntities
                 .HasForeignKey(link => link.ToInternalDemandOrder);
             
             modelBuilder.Entity<Order>()
-                .HasOne(link => link.AssignedResource)
+                .HasOne(ord => ord.AssignedResource)
                 .WithMany()
-                .HasForeignKey(link => link.Resource);
+                .HasForeignKey(ord => ord.Resource);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder) =>

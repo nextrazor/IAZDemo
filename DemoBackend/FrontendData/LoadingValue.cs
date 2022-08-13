@@ -3,15 +3,15 @@
     [Serializable]
     public class LoadingValue
     {
-        public string MachineName;
-        public string LoadingCategory;
-        public double Value;
+        public string machineName;
+        public string loadingCategory;
+        public double value;
 
         public LoadingValue(string machineName, string loadingCategory, double value)
         {
-            MachineName = machineName;
-            LoadingCategory = loadingCategory;
-            Value = value;
+            this.machineName = machineName;
+            this.loadingCategory = loadingCategory;
+            this.value = value;
         }
     }
 }

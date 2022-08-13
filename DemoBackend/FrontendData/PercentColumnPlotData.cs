@@ -10,11 +10,11 @@
     [Serializable]
     public class LoadingPlotData
     {
-        public LoadingValue[] Data = null!;
+        public LoadingValue[] data = null!;
 
         public LoadingPlotData(LoadingValue[] data)
         {
-            Data = data;
+            this.data = data;
         }
     }
 }

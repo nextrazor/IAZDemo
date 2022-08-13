@@ -5,19 +5,19 @@ namespace IAZBackend.FrontendData
     [Serializable]
     public class KpiPageData : FrontendData
     {
-        public PiePlotData LateOrders;
-        public PiePlotData LateOpers;
-        public GaugePlotData OeeGauge;
-        public LoadingPlotData LoadingPlot;
-        public PainPointData PainPoints;
+        public PiePlotData lateOrders;
+        public PiePlotData lateOpers;
+        public GaugePlotData oeeGauge;
+        public LoadingPlotData loadingPlot;
+        public PainPointData painPoints;
 
-        public KpiPageData(NamedValue[] lateOrdersData, NamedValue[] lateOpersData, double oee, LoadingValue[] loadingData, PainPoint[] painPoints)
+        public KpiPageData(NamedValue[] lateOrdersData, NamedValue[] lateOpersData, double oee, LoadingValue[] loadingData, PainPoint[] pPoints)
         {
-            LateOrders = new PiePlotData(lateOrdersData);
-            LateOpers = new PiePlotData(lateOpersData);
-            OeeGauge = new GaugePlotData(oee, GaugeRange.GetRgrRange(0.4, 0.7));
-            LoadingPlot = new LoadingPlotData(loadingData);
-            PainPoints = new PainPointData(painPoints);
+            lateOrders = new PiePlotData(lateOrdersData);
+            lateOpers = new PiePlotData(lateOpersData);
+            oeeGauge = new GaugePlotData(oee, GaugeRange.GetRgrRange(0.4, 0.7));
+            loadingPlot = new LoadingPlotData(loadingData);
+            painPoints = new PainPointData(pPoints);
         }
 
         public override string GetJson()
