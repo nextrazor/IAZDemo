@@ -62,7 +62,29 @@ app.MapGet("/testData", () =>
         new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CAE2"), "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
 
-    //KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
+    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
+    
+    return kpiData.GetJson();
+})
+.WithName("GetTestData");
+
+app.MapGet("/realData", () =>
+{
+    var machNames = new string[]
+    {
+        "1696_Центр фрезерный обрабатывающий с ЧПУ",
+        "2157_Центр фрезерный обрабатывающий с ЧПУ",
+        "2086_Центр фрезерный обрабатывающий с ЧПУ",
+        "2197_Центр фрезерный обрабатывающий с ЧПУ"
+    };
+    var ppData = new PainPoint[]
+    {
+        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CFE2"), "Оборудование", PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
+        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CDE2"), "Оборудование", PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
+        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CCE2"), "Заказ", PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
+        new PainPoint(Guid.Parse("8518497D-E6CC-4E81-98BF-0734AAD7CAE2"), "Заказ", PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
+    };
+
     KpiPageData kpiData = new KpiPageData(
         KpiController.GetLateOrders(),
         KpiController.GetLateOpers(),
@@ -72,7 +94,7 @@ app.MapGet("/testData", () =>
 
     return kpiData.GetJson();
 })
-.WithName("GetTestData");
+.WithName("GetRealData");
 
 app.MapGet("/workers", () =>   
 {
