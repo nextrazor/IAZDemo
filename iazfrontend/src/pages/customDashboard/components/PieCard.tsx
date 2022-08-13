@@ -3,10 +3,10 @@ import type { FC } from 'react';
 //import React, { useState, useEffect } from 'react';
 //import { useRequest } from 'umi';
 //import {  testData, DataItem } from '../dataLoader';
-import { AnalysisProps } from '../types';
+import type { AnalysisProps } from '../types';
 import { Pie } from '@ant-design/charts';
 
-const CustomChart: FC<AnalysisProps> = (props: AnalysisProps) => {
+const PieCard: FC<AnalysisProps> = (props: AnalysisProps) => {
   // const [data, setData] = useState([]);
   // //const { loading, data } = useRequest(testData);
 
@@ -30,4 +30,4 @@ const CustomChart: FC<AnalysisProps> = (props: AnalysisProps) => {
   );
 };
 
-export default CustomChart;
+export default PieCard;

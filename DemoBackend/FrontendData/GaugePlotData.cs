@@ -28,24 +28,24 @@ namespace IAZBackend.FrontendData
         public static GaugeRange GetTrafficLightRange(double redLevel, double yellowLevel)
         {
             return new GaugeRange(new double[] { 0, redLevel, yellowLevel, 1 },
-                new Color[] { System.Drawing.Color.Red, System.Drawing.Color.Yellow, System.Drawing.Color.Green });
+                new Color[] { System.Drawing.Color.PaleVioletRed, System.Drawing.Color.LightYellow, System.Drawing.Color.PaleGreen });
         }
 
         public static GaugeRange GetRgrRange(double lowerBound, double upperBound)
         {
             return new GaugeRange(new double[] { 0, lowerBound, upperBound, 1 },
-                new Color[] { System.Drawing.Color.Red, System.Drawing.Color.Yellow, System.Drawing.Color.Green });
+                new Color[] { System.Drawing.Color.PaleVioletRed, System.Drawing.Color.PaleGreen, System.Drawing.Color.PaleVioletRed });
         }
 
-        public double[] Ticks;
-        public string[] Color;
+        public double[] ticks;
+        public string[] color;
 
         public GaugeRange(double[] ticks, Color[] color)
         {
             if (ticks.Length != color.Length + 1)
                 throw new ArgumentException("Array lengths do not match", nameof(color));
-            Ticks = ticks;
-            Color = color.Select(c => c.ToHexString()).ToArray();
+            this.ticks = ticks;
+            this.color = color.Select(c => c.ToHexString()).ToArray();
         }
     }
 
