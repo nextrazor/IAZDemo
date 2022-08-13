@@ -24,7 +24,7 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-            var lastOpers = dbContext.Orders
+            IEnumerable<Order> lastOpers = dbContext.Orders
                 .Where(ord => ord.DatasetId == scheduleDsId)
                 .GroupBy(ord => ord.OrderNo)
                 .Select(og => og.OrderByDescending(op => op.OpNo).First());
@@ -65,7 +65,7 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-            var orders = dbContext.Orders
+            IEnumerable<Order> orders = dbContext.Orders
                 .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.AssignedResource != null) && (ord.AssignedResource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime));
             if (!orders.Any())
@@ -87,7 +87,7 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-            var orderGroups = dbContext.Orders
+            IEnumerable<IGrouping<Resource, Order>> orderGroups = (IEnumerable<IGrouping<Resource, Order>>)dbContext.Orders
                 .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.AssignedResource != null) && (ord.AssignedResource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
                 .GroupBy(ord => ord.AssignedResource);
