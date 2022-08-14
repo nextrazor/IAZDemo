@@ -5,13 +5,9 @@ namespace IAZBackend.Models.ApsEntities
 {
     public class Dataset
     {
-        [Key]
         public int DatasetId { get; set; }
         public string Name { get; set; } = string.Empty;
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

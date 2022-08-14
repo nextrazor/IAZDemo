@@ -59,8 +59,14 @@ app.MapGet("/testData", () =>
         new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", new string[] { "Заказ", PainPointSeverity.Normal.ToString() }, PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
 
-    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
-    
+    //    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
+    KpiPageData kpiData = new KpiPageData(
+        KpiController.GetLateOrders(),
+        KpiController.GetLateOpers(),
+        KpiController.GetMonthOee(KpiController.GetEarliestStart()),
+        KpiController.GetLoadingData(KpiController.GetEarliestStart()),
+        ppData);
+
     return kpiData.GetJson();
 })
 .WithName("GetTestData");
@@ -136,8 +142,8 @@ IEnumerable<IGanttElement> GetApsTasks(string datasetName)
             throw new ApplicationException($"Dataset '{datasetName}' not found");
 
         return dbContext.Orders
-            .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue) && (ord.Resource.HasValue))
-            .Select(ord => new IAZBackend.Task(ord.StartTime!.Value, ord.EndTime!.Value, ord.ToString(), ord.OrdersId, ord.Resource!.Value, "Project",
+            .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue) && (ord.Resource != null))
+            .Select(ord => new IAZBackend.Task(ord.StartTime!.Value, ord.EndTime!.Value, ord.ToString(), ord.OrderId, ord.ResourceId!.Value, "Project",
                 new string[] {}, Convert.ToInt32(ord.MidBatchQuantity * 100 / ord.Quantity), false))
             .ToArray();
     }
@@ -147,7 +153,7 @@ IAZBackend.Resource[] GetApsResources()
 {
     using (IAZ_ApsContext dbContext = new IAZ_ApsContext())
     {
-        return dbContext.Resources.Select(el => new IAZBackend.Resource(el.ResourcesId, el.Name)).ToArray();
+        return dbContext.Resources.Select(el => new IAZBackend.Resource(el.ResourceId, el.Name)).ToArray();
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using IAZBackend.FrontendData;
 using IAZBackend.Models.ApsEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace IAZBackend
 {
@@ -67,7 +68,7 @@ namespace IAZBackend
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
             var orders = dbContext.Orders
-                .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.AssignedResource != null) && (ord.AssignedResource.FiniteOrInfinite == (int)ResourceType.Finite) &&
+                .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.Resource != null) && (ord.Resource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
                 .AsEnumerable();
             if (!orders.Any())
@@ -89,29 +90,24 @@ namespace IAZBackend
             int scheduleDsId = dbContext.Orders_Dataset
                 .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
                 ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
-
-            Order? x = dbContext.Orders.FirstOrDefault(ord => ord.Resource > 0);
-
             var orderGroups = dbContext.Orders
-                .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.AssignedResource != null) && (ord.AssignedResource.FiniteOrInfinite == (int)ResourceType.Finite) &&
+                .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.Resource != null) && (ord.Resource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
                 .AsEnumerable()
-                .GroupBy(ord => ord.AssignedResource)
+                .GroupBy(ord => ord.Resource)
                 .ToArray();
-            LoadingValue[] result = new LoadingValue[orderGroups.Count() * 2];
-            int i = 0;
-            foreach (var group in orderGroups)
+            List<LoadingValue> loadingValues = new List<LoadingValue>();
+            foreach (var group in orderGroups.OrderBy(gr => gr.Key.ShortName))
             {
                 double machineLoading = group
                     .Sum(ord => ((ord.EndTime!.Value > endTime ? endTime : ord.EndTime!.Value) - (ord.StartTime!.Value < startTime ? startTime : ord.StartTime!.Value)).TotalDays);
                 if (machineLoading > totalTime)
                     throw new ApplicationException($"Расчетное значение OEE для ресурса {group.Key} составило больше 100%");
-                string machineName = group.Key.ToString() ?? throw new NullReferenceException();
-                result[i] = new LoadingValue(machineName, "Работа", machineLoading);
-                result[i + 1] = new LoadingValue(machineName, "Простой", totalTime - machineLoading);
-                i += 2;
+                string machineName = group.Key?.ShortName ?? throw new NullReferenceException("В статистику попали данные без привязки к ресурсу");
+                loadingValues.Add(new LoadingValue(machineName, "Работа", machineLoading));
+                loadingValues.Add(new LoadingValue(machineName, "Простой", totalTime - machineLoading));
             }
-            return result;
+            return loadingValues.Where(lv => lv.value > 0).ToArray();
         }
     }
 }

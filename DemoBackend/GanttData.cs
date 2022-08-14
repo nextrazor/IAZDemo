@@ -161,7 +161,7 @@ namespace IAZBackend
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[]? dependencies, int progress, bool isDisabled)
+        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[] dependencies, int progress, bool isDisabled)
         {
             this.startDate = start;
             this.endDate = end;

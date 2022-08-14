@@ -4,18 +4,13 @@ namespace IAZBackend.Models.ApsEntities
 {
     public class OrderLink
     {
-        [Key]
-        public int OrderLinksId { get; set; }
         public int DatasetId { get; set; }
-        public Dataset Dataset { get; set; } = null!;
-        public int? FromInternalSupplyOrder { get; set; }
-        public int? ToInternalDemandOrder { get; set; }
-        public Order? FromOrder { get; set; }
-        public Order? ToOrder { get; set; }
+        public virtual Dataset Dataset { get; set; } = null!;
+        public virtual Order? FromOrder { get; set; }
+        public int? FromOrderId { get; set; }
+        public virtual Order? ToOrder { get; set; }
+        public int? ToOrderId { get; set; }
 
-        public override string ToString()
-        {
-            return $"Link '{FromOrder}' - '{ToOrder}'";
-        }
+        public override string ToString() => $"Link '{FromOrder}' - '{ToOrder}'";
     }
 }
