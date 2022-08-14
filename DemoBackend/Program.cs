@@ -35,6 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/testData", () =>
 {
+    /* Тестовые данные для панели KPI
     var lateOrders = new NamedValue[] { new NamedValue("В срок", 0.8), new NamedValue("Со срывом срока", 0.12), new NamedValue("Не спланированы", 0.08) };
     var lateOpers = new NamedValue[] { new NamedValue("В срок", 0.9), new NamedValue("Со срывом срока", 0.06), new NamedValue("Не спланированы", 0.04) };
     var machNames = new string[]
@@ -58,46 +59,18 @@ app.MapGet("/testData", () =>
         new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", new string[] { "Заказ", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
         new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", new string[] { "Заказ", PainPointSeverity.Normal.ToString() }, PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
     };
+    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData); */
 
-    //    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData);
     KpiPageData kpiData = new KpiPageData(
         KpiController.GetLateOrders(),
         KpiController.GetLateOpers(),
         KpiController.GetMonthOee(KpiController.GetEarliestStart()),
         KpiController.GetLoadingData(KpiController.GetEarliestStart()),
-        ppData);
+        KpiController.GetPainPoints());
 
     return kpiData.GetJson();
 })
 .WithName("GetTestData");
-
-app.MapGet("/realData", () =>
-{
-    var machNames = new string[]
-    {
-        "1696_Центр фрезерный обрабатывающий с ЧПУ",
-        "2157_Центр фрезерный обрабатывающий с ЧПУ",
-        "2086_Центр фрезерный обрабатывающий с ЧПУ",
-        "2197_Центр фрезерный обрабатывающий с ЧПУ"
-    };
-    var ppData = new PainPoint[]
-    {
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", new string[] { "Заказ", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", new string[] { "Заказ", PainPointSeverity.Normal.ToString() }, PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
-    };
-
-    KpiPageData kpiData = new KpiPageData(
-        KpiController.GetLateOrders(),
-        KpiController.GetLateOpers(),
-        KpiController.GetMonthOee(KpiController.GetEarliestStart()),
-        KpiController.GetLoadingData(KpiController.GetEarliestStart()),
-        ppData);
-
-    return kpiData.GetJson();
-})
-.WithName("GetRealData");
 
 app.MapGet("/workers", () =>   
 {

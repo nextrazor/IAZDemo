@@ -97,7 +97,7 @@ namespace IAZBackend
                 .GroupBy(ord => ord.Resource)
                 .ToArray();
             List<LoadingValue> loadingValues = new List<LoadingValue>();
-            foreach (var group in orderGroups.OrderBy(gr => gr.Key.ShortName))
+            foreach (var group in orderGroups.OrderBy(gr => gr.Key!.ShortName))
             {
                 double machineLoading = group
                     .Sum(ord => ((ord.EndTime!.Value > endTime ? endTime : ord.EndTime!.Value) - (ord.StartTime!.Value < startTime ? startTime : ord.StartTime!.Value)).TotalDays);
@@ -108,6 +108,15 @@ namespace IAZBackend
                 loadingValues.Add(new LoadingValue(machineName, "Простой", totalTime - machineLoading));
             }
             return loadingValues.Where(lv => lv.value > 0).ToArray();
+        }
+
+        public static PainPoint[] GetPainPoints()
+        {
+            using var dbContext = new IAZ_ApsContext();
+            Dataset scheduleDs = dbContext.Orders_Dataset
+                .FirstOrDefault(ds => ds.Name == "Schedule")
+                ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
+            return new PainPointCollector().GetAllPainPoints(scheduleDs);
         }
     }
 }
