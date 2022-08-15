@@ -1,6 +1,6 @@
 ﻿namespace IAZBackend.Models.ApsEntities
 {
-    public class Order
+    public partial class Order
     {
         public int OrderId { get; set; }
         public virtual Dataset Dataset { get; set; } = null!;
