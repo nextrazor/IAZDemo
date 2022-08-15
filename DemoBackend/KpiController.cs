@@ -9,11 +9,8 @@ namespace IAZBackend
         public static DateTime GetEarliestStart()
         {
             using var dbContext = new IAZ_ApsContext();
-            int scheduleDsId = dbContext.Orders_Dataset
-                .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
-                ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
             var schedOrders = dbContext.Orders
-                .Where(ord => (ord.DatasetId == scheduleDsId) && ord.StartTime.HasValue);
+                .Where(ord => (ord.DatasetId == Dataset.CurrentDataset.DatasetId) && ord.StartTime.HasValue);
             if (!schedOrders.Any())
                 return DateTime.Now;
             return schedOrders.Min(ord => ord.StartTime!.Value);
@@ -22,11 +19,8 @@ namespace IAZBackend
         public static NamedValue[] GetLateOrders()
         {
             using var dbContext = new IAZ_ApsContext();
-            int scheduleDsId = dbContext.Orders_Dataset
-                .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
-                ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
             var lastOpers = dbContext.Orders
-                .Where(ord => ord.DatasetId == scheduleDsId)
+                .Where(ord => ord.DatasetId == Dataset.CurrentDataset.DatasetId)
                 .GroupBy(ord => ord.OrderNo)
                 .Select(og => og.OrderByDescending(op => op.OpNo).First())
                 .AsEnumerable();
@@ -45,9 +39,7 @@ namespace IAZBackend
         public static NamedValue[] GetLateOpers()
         {
             using var dbContext = new IAZ_ApsContext();
-            int scheduleDsId = dbContext.Orders_Dataset
-                .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
-                ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
+            int scheduleDsId = Dataset.CurrentDataset.DatasetId;
             int goodOpers = dbContext.Orders
                 .Where(op => (op.DatasetId == scheduleDsId) && op.EndTime.HasValue && (!op.DueDate.HasValue || (op.EndTime!.Value <= op.DueDate!.Value)))
                 .Count();
@@ -64,11 +56,8 @@ namespace IAZBackend
         {
             using var dbContext = new IAZ_ApsContext();
             DateTime endTime = startTime.AddMonths(1);
-            int scheduleDsId = dbContext.Orders_Dataset
-                .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
-                ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
             var orders = dbContext.Orders
-                .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.Resource != null) && (ord.Resource.FiniteOrInfinite == (int)ResourceType.Finite) &&
+                .Where(ord => (ord.DatasetId == Dataset.CurrentDataset.DatasetId) && (ord.Resource != null) && (ord.Resource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
                 .AsEnumerable();
             if (!orders.Any())
@@ -87,11 +76,8 @@ namespace IAZBackend
             using var dbContext = new IAZ_ApsContext();
             DateTime endTime = startTime.AddMonths(1);
             double totalTime = (endTime - startTime).TotalDays;
-            int scheduleDsId = dbContext.Orders_Dataset
-                .FirstOrDefault(ds => ds.Name == "Schedule")?.DatasetId
-                ?? throw new KeyNotFoundException("В БД APS не найден набор данных Schedule");
             var orderGroups = dbContext.Orders
-                .Where(ord => (ord.DatasetId == scheduleDsId) && (ord.Resource != null) && (ord.Resource.FiniteOrInfinite == (int)ResourceType.Finite) &&
+                .Where(ord => (ord.DatasetId == Dataset.CurrentDataset.DatasetId) && (ord.Resource != null) && (ord.Resource.FiniteOrInfinite == (int)ResourceType.Finite) &&
                     (ord.StartTime!.Value < endTime) && (ord.EndTime!.Value > startTime))
                 .AsEnumerable()
                 .GroupBy(ord => ord.Resource)

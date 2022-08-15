@@ -8,9 +8,12 @@
         public virtual Resource? Resource { get; set; }
         public int? ResourceId { get; set; }
         public string OrderNo { get; set; } = string.Empty;
+        public string PartNo { get; set; } = string.Empty;
         public double Quantity { get; set; }
         public int OpNo { get; set; }
         public string OperationName { get; set; } = string.Empty;
+        public bool IsMilitary { get; set; } = false;
+        public int? WorkGroup { get; set; }
         public double MidBatchQuantity { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }

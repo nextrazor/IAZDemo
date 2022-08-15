@@ -72,6 +72,12 @@ app.MapGet("/testData", () =>
 })
 .WithName("GetTestData");
 
+app.MapGet("/demands", () =>
+{
+    return DemandController.GetDemands(Dataset.CurrentDataset);
+})
+.WithName("GetDemands");
+
 app.MapGet("/workers", () =>   
 {
     using (IAZ_PBDContext dbContext = new IAZ_PBDContext())
