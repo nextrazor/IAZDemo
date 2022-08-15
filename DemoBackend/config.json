@@ -1,5 +1,0 @@
-{
-  "sqlServer": "DESKTOP-30L35AH\\SQLEXPRESS",
-  "policyName": "_myAllowSpecificOrigins",
-  "allowedURL": "http://localhost:8000"
-}

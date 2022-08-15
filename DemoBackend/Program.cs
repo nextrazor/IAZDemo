@@ -78,6 +78,12 @@ app.MapGet("/demands", () =>
 })
 .WithName("GetDemands");
 
+app.MapGet("/ordergantt/{orderNo}", (string orderNo) =>
+{
+    return GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo).Result();
+})
+.WithName("GetOrderGantt");
+
 app.MapGet("/workers", () =>   
 {
     using (IAZ_PBDContext dbContext = new IAZ_PBDContext())
@@ -123,7 +129,7 @@ IEnumerable<IGanttElement> GetApsTasks(string datasetName)
         return dbContext.Orders
             .Where(ord => (ord.Dataset == dataset) && (ord.StartTime.HasValue) && (ord.EndTime.HasValue) && (ord.Resource != null))
             .Select(ord => new IAZBackend.Task(ord.StartTime!.Value, ord.EndTime!.Value, ord.ToString(), ord.OrderId, ord.ResourceId!.Value, "Project",
-                new string[] {}, Convert.ToInt32(ord.MidBatchQuantity * 100 / ord.Quantity), false))
+                new string[] {}, Convert.ToInt32(ord.MidBatchQuantity * 100 / ord.Quantity), false, HighlightType.Normal))
             .ToArray();
     }
 }

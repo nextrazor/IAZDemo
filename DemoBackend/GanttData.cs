@@ -2,9 +2,14 @@
 
 namespace IAZBackend
 {
-    public enum GantElementType { task, milestone, project }
+    public enum GanttElementType { task, milestone, project }
+
+    [Serializable]
     public class GanttData
     {
+        static GanttData empty = new();
+        public static GanttData Empty { get => empty; }
+
         List<Resource> resources = new List<Resource>();
 
         List<IGanttElement> ganttElements = new List<IGanttElement>();
@@ -52,6 +57,7 @@ namespace IAZBackend
         }
     }
 
+    [Serializable]
     public class Resource
     {
         public int id { get; set; }
@@ -74,6 +80,7 @@ namespace IAZBackend
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
+        public HighlightType highlightType { get; set; }
 
         public object ReturnGantElement();
         
@@ -89,15 +96,17 @@ namespace IAZBackend
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
+        public HighlightType highlightType { get; set; }
 
-        public Project(DateTime start, DateTime end, string name, int id, int progress)
+        public Project(DateTime start, DateTime end, string name, int id, int progress, HighlightType highlightType)
         {
             this.startDate = start;
             this.endDate = end;
             this.name = name;
             this.id = id;
-            type = GantElementType.project.ToString();
+            type = GanttElementType.project.ToString();
             this.progress = progress;
+            this.highlightType = highlightType;
         }
 
         
@@ -119,24 +128,26 @@ namespace IAZBackend
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
+        public HighlightType highlightType { get; set; }
 
         public string project;
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Task(DateTime start, DateTime end, string name, int id, int resourceId, string project, string[] dependencies, int progress, bool isDisabled)
+        public Task(DateTime start, DateTime end, string name, int id, int resourceId, string project, string[] dependencies, int progress, bool isDisabled, HighlightType highlightType)
         {
             this.startDate = start;
             this.endDate = end;
             this.name = name;
             this.id = id;
             this.resourceId = resourceId;
-            type = GantElementType.task.ToString();
+            type = GanttElementType.task.ToString();
             this.project = project;
             this.dependencies = dependencies;
             this.progress = progress;
             this.displayOrder = displayOrder;
             this.isDisabled = isDisabled;
+            this.highlightType = highlightType;
         }
 
         public object ReturnGantElement()
@@ -156,28 +167,38 @@ namespace IAZBackend
         public string type { get; set; }
         public int progress { get; set; }
         public int displayOrder { get; set; }
+        public HighlightType highlightType { get; set; }
 
         public string project;
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[] dependencies, int progress, bool isDisabled)
+        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[] dependencies, int progress, bool isDisabled, HighlightType highlightType)
         {
             this.startDate = start;
             this.endDate = end;
             this.name = name;
             this.id = id;
-            type = GantElementType.milestone.ToString();
+            type = GanttElementType.milestone.ToString();
             this.project = project;
             this.dependencies = dependencies;
             this.progress = progress;
             this.displayOrder = displayOrder;
             this.isDisabled = isDisabled;
+            this.highlightType = highlightType;
         }
 
         public object ReturnGantElement()
         {
             return this;
         }
+    }
+
+    public enum HighlightType
+    {
+        Normal = 0,
+        Highlighted = 1,
+        Late = 2,
+        LateHighlighted = 3
     }
 }
