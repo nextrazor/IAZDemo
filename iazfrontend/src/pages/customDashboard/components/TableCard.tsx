@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import type { ColumnProps } from '../types';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import type { DataItem } from '../types';
 
 const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
   interface DataType {
@@ -106,14 +107,7 @@ const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
 
   return (
     <Card title={props.title} loading={props.loading}>
-      <Table
-        columns={columns}
-        dataSource={
-          props.data.sort(function (a, b) {
-            return a.severity - b.severity;
-          }) as DataType[]
-        }
-      />
+      <Table columns={columns} dataSource={props.data as DataItem[]} />
     </Card>
   );
 };
