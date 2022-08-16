@@ -10,7 +10,7 @@
         public double quantity { get; set; }
         public bool isMilitary { get; set; }
         public int? workGroup { get; set; }
-        public double percent { get; set; }
+        public int percent { get; set; }
         public string orderStatus { get; set; } = null!;
         public string dateStatus { get; set; } = null!;
 

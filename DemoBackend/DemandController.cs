@@ -28,7 +28,7 @@ namespace IAZBackend
                     quantity = lo.Quantity,
                     isMilitary = lo.IsMilitary,
                     workGroup = lo.WorkGroup,
-                    percent = GetManufPercent(lo),
+                    percent = (int)(GetManufPercent(lo) * 100),
                     orderStatus = GetOrderStatus(lo),
                     dateStatus = GetDateStatus(lo)
                 })
@@ -45,7 +45,7 @@ namespace IAZBackend
             double producedLabour = orderOpers.Sum(op => op.ProducedLabour);
             if (fullLabour <= 0)
                 return 0;
-            if (fullLabour >= producedLabour)
+            if (producedLabour >= fullLabour)
                 return 1;
             return producedLabour / fullLabour;
         }
