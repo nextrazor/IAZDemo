@@ -74,13 +74,13 @@ app.MapGet("/testData", () =>
 
 app.MapGet("/demands", () =>
 {
-    return DemandController.GetDemands(Dataset.CurrentDataset);
+    return $"{{\"data\":{JsonConvert.SerializeObject(DemandController.GetDemands(Dataset.CurrentDataset))}}}";
 })
 .WithName("GetDemands");
 
 app.MapGet("/ordergantt/{orderNo}", (string orderNo) =>
 {
-    return GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo).Result();
+    return  GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo).Result();
 })
 .WithName("GetOrderGantt");
 
