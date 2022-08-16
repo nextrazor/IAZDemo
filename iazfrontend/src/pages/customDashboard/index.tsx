@@ -8,7 +8,7 @@ import PieCard from './components/PieCard';
 import GaugeCard from './components/GaugeCard';
 import ColumnCard from './components/ColumnCard';
 import TableCard from './components/TableCard';
-import type { OeeGauge } from './types';
+import type { OeeGauge } from './service/types';
 
 type AnalysisProps = {
   loading: boolean;

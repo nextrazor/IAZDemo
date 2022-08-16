@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import type { FC } from 'react';
-import type { GaugeProps } from '../types';
+import type { GaugeProps } from '../service/types';
 import { Gauge } from '@ant-design/plots';
 
 const GaugeCard: FC<GaugeProps> = (props: GaugeProps) => {

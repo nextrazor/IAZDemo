@@ -49,6 +49,15 @@ export type ColumnProps = {
   data: DataItem[];
 };
 
+export type KanbanProps = {
+  loading: boolean;
+  columns: [];
+};
+
+export type ColumnsData = {
+  columns: [];
+};
+
 export type GaugeProps = {
   data: OeeGauge;
   loading: boolean;

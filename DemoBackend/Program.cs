@@ -95,6 +95,21 @@ app.MapGet("/workers", () =>
 })
 .WithName("GetWorkers");
 
+app.MapGet("/kanban", () =>
+{
+    string workers = "{\"resources\": {\"rows\": [{\"id\": 1, \"name\": \"Angelo\"},{\"id\": 2,\"name\": \"Celia\"}]}, \"tasks\": {\"rows\": [{\"id\": 1,\"name\": \"Book flight\",\"status\": \"done\",\"prio\": \"medium\"},{\"id\": 2,\"name\": \"Book hotel\",\"status\": \"done\",\"prio\": \"medium\"}]},\"assignments\": { \"rows\": [{\"id\": 1,\"event\": 1,\"resource\": 1},{\"id\": 2, \"event\": 2,\"resource\": 2}] }}";
+
+    return workers;
+})
+.WithName("GetKanban");
+
+app.MapGet("/kanbanColumns", () =>
+{
+    string workers = "{ \"data\":{ \"columns\":[ { \"id\": \"ОЛЕГ\", \"text\": \"ОЛЕГ\", \"color\": \"orange\" }, { \"id\": \"doing\",  \"text\": \"Doing\", \"color\": \"blue\", \"tooltip\": \"Items that are currently in progress\" }, { \"id\": \"done\", \"text\": \"Done\" }]}}";
+    return workers;
+})
+.WithName("GetKanbanColumns");
+
 app.MapGet("/additionalGroups", () =>
 {
     using (IAZ_PBDContext dbContext = new IAZ_PBDContext())

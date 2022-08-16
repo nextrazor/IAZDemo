@@ -72,6 +72,12 @@ export default defineConfig({
       icon: 'smile',
     },
     {
+      path: '/masterDashboard',
+      name: 'masterDashboard',
+      component: './masterDashboard',
+      icon: 'smile',
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       icon: 'dashboard',
