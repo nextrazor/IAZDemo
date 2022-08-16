@@ -51,4 +51,5 @@ export default {
   'menu.editor.koni': 'Koni Editor',
   'menu.masterDashboard': 'Master Dashboard',
   'menu.customDashboard': 'Planner Dashboard',
+  'menu.nomenclaturePlan': 'Nomenclature Plan',
 };

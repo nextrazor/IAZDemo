@@ -27,3 +27,16 @@ export type BasicListItemDataType = {
   content: string;
   members: Member[];
 };
+
+export type ListItemDataType = {
+  orderNo: string;
+  dueDate: string;
+  endTime: string;
+  partNo: string;
+  quantity: number;
+  isMilitary: boolean;
+  workGroup: string;
+  dateStatus: string;
+  orderStatus: 'normal' | 'exception' | 'active' | 'success';
+  percent: number;
+};

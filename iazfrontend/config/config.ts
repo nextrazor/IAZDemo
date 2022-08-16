@@ -66,6 +66,12 @@ export default defineConfig({
       ],
     },
     {
+      path: '/nomenclaturePlan',
+      name: 'nomenclaturePlan',
+      component: './nomenclaturePlan',
+      icon: 'smile',
+    },
+    {
       path: '/customDashboard',
       name: 'customDashboard',
       component: './customDashboard',

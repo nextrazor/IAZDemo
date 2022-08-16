@@ -1,12 +1,10 @@
 import { GridContent } from '@ant-design/pro-layout';
-import { Col, Row } from 'antd';
 import type { FC } from 'react';
-import type { BasicListItemDataType } from './data.d';
+import type { ListItemDataType } from './data.d';
 import styles from './style.less';
 import { useRequest } from 'umi';
 import { testData } from './dataLoader';
 import moment from 'moment';
-// import { useRequest } from 'umi';
 import {
   Avatar,
   Button,
@@ -27,61 +25,90 @@ type AnalysisProps = {
 };
 
 const ListContent = ({
-  data: { owner, createdAt, percent, status },
+  data: {
+    orderNo,
+    dueDate,
+    endTime,
+    partNo,
+    quantity,
+    isMilitary,
+    workGroup,
+    dateStatus,
+    orderStatus,
+    percent,
+  },
 }: {
-  data: BasicListItemDataType;
+  data: ListItemDataType;
 }) => (
   <div className={styles.listContent}>
     <div className={styles.listContentItem}>
-      <span>Owner</span>
-      <p>{owner}</p>
+      <span>Тип продукции</span>
+      <p style={{ color: 'black' }}>{isMilitary ? 'Военная' : 'Гражданская'}</p>
     </div>
     <div className={styles.listContentItem}>
-      <span>开始时间</span>
-      <p>{moment(createdAt).format('YYYY-MM-DD HH:mm')}</p>
+      <span>Крайний срок</span>
+      <p style={{ color: 'black' }}>{moment(dueDate).format('YYYY-MM-DD HH:mm')}</p>
     </div>
     <div className={styles.listContentItem}>
-      <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+      <span>Плановая дата завершения</span>
+      <p style={{ color: 'red' }}>{moment(endTime).format('YYYY-MM-DD HH:mm')}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <span>Количество</span>
+      <p style={{ color: 'black' }}>{quantity}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <Progress percent={percent} status={orderStatus} strokeWidth={6} style={{ width: 180 }} />
+    </div>
+    <div className={styles.listContentItem}>
+      <span>Группа</span>
+      <p style={{ color: 'black' }}>{workGroup}</p>
     </div>
   </div>
 );
+
+const GoToGantt = (item: string) => {
+  console.log(item);
+};
 
 const CustomDash: FC<AnalysisProps> = () => {
   const { loading, data } = useRequest(testData);
 
   return (
-    <GridContent>
-      <Row gutter={24}>
-        <Card bordered={false} title="Номенклатурный план" style={{ marginTop: 24 }}>
-          <List
-            size="large"
-            rowKey="orderNo"
-            loading={loading}
-            //pagination={paginationProps}
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <a
-                    key="edit"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      showEditModal(item);
-                    }}
-                  >
-                    编辑
-                  </a>,
-                  <MoreBtn key="more" item={item} />,
-                ]}
-              >
-                <List.Item.Meta title={item.partNo} description={item.orderNo} />
-                <ListContent data={item} />
-              </List.Item>
-            )}
-          />
-        </Card>
-      </Row>
-    </GridContent>
+    <div className={styles.standardList}>
+      <Card
+        className={styles.listCard}
+        bordered={false}
+        title="Номенклатурный план"
+        style={{ marginTop: 24 }}
+      >
+        <List
+          size="large"
+          rowKey="orderNo"
+          loading={loading}
+          //pagination={paginationProps}
+          dataSource={data}
+          renderItem={(item) => (
+            <List.Item
+              actions={[
+                <a
+                  key="edit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    GoToGantt(item.orderNo as string);
+                  }}
+                >
+                  Гантт
+                </a>,
+              ]}
+            >
+              <List.Item.Meta title={item.orderNo} description={item.partNo} />
+              <ListContent data={item as unknown as ListItemDataType} />
+            </List.Item>
+          )}
+        />
+      </Card>
+    </div>
   );
 };
 
