@@ -11,10 +11,15 @@ const Gantt: FC<GanttProps> = (props: GanttProps) => {
   console.log();
 
   const schedulerproConfig: Partial<SchedulerProConfig> = {
-    rowHeight: 60,
+    startDate: new Date(2022, 6, 1),
+    endDate: new Date(2022, 8, 1),
     barMargin: 15,
     eventStyle: 'colored',
-    viewPreset: 'hourAndDay',
+    viewPreset: 'hourAndDay-64by40',
+    features: {
+      percentBar: true
+    },
+    rowHeight: 90,
 
     columns: [{ type: 'resourceInfo', width: 150 }],
 

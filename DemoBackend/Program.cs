@@ -80,7 +80,8 @@ app.MapGet("/demands", () =>
 
 app.MapGet("/ordergantt/{orderNo}", (string orderNo) =>
 {
-    return  GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo).Result();
+    BryntumGanttData ganttData = GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo);
+    return JsonConvert.SerializeObject(ganttData);
 })
 .WithName("GetOrderGantt");
 
