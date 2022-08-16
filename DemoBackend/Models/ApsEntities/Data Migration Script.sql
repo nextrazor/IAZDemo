@@ -27,8 +27,10 @@ FROM [IAZ Preactor Source].[UserData].[SecondaryConstraints]
 GO
 SET IDENTITY_INSERT [SecConstraints] OFF
 
-INSERT INTO [Orders] (OrderId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, ResourceId, PartNo, IsMilitary, WorkGroup)
-SELECT OrdersId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, Resource, PartNo, IsMilitary, WorkGroup
+INSERT INTO [Orders] (OrderId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, ResourceId, PartNo,
+	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime)
+SELECT OrdersId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, Resource, PartNo,
+	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime
 FROM [IAZ Preactor Source].[UserData].[Orders]
 WHERE OrderNo != '' and OperationName != '' and Quantity > 0 and ((Resource is null) or (Resource in (select ResourcesId from [IAZ Preactor Source].[UserData].[Resources])))
 GO

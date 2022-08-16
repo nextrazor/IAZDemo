@@ -15,6 +15,9 @@
         public bool IsMilitary { get; set; } = false;
         public int? WorkGroup { get; set; }
         public double MidBatchQuantity { get; set; }
+        public int ProcessTimeType { get; set; }
+        public double OpTimePerItem { get; set; }
+        public double BatchTime { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public DateTime? DueDate { get; set; }
@@ -23,5 +26,11 @@
         public virtual List<OrderSecConstraint> OrderSecConstraints { get; set; } = new List<OrderSecConstraint>();
 
         public override string ToString() => $"{OrderNo} - {OpNo}. {OperationName}";
+    }
+
+    public enum ProcessTimeType
+    {
+        TimePerItem = 0,
+        TimePerBatch = 1
     }
 }

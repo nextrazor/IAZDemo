@@ -24,6 +24,9 @@
 
     public partial class Order
     {
+        /// <summary>
+        /// Доля выполнения операции
+        /// </summary>
         public double ProgressPercent
         {
             get
@@ -35,5 +38,29 @@
                 return MidBatchQuantity / Quantity;
             }
         }
+
+        /// <summary>
+        /// Общая плановая трудоемкость по партии
+        /// </summary>
+        public double FullLabour
+        {
+            get
+            {
+                switch (ProcessTimeType)
+                {
+                    case (int)ApsEntities.ProcessTimeType.TimePerItem:
+                        return Quantity * OpTimePerItem;
+                    case (int)ApsEntities.ProcessTimeType.TimePerBatch:
+                        return BatchTime;
+                    default:
+                        throw new NotSupportedException($"Неподдерживаемый тип нормирования времени - {ProcessTimeType}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Выполненная трудоемкость по партии
+        /// </summary>
+        public double ProducedLabour => FullLabour * ProgressPercent;
     }
 }
