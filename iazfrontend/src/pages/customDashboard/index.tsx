@@ -4,11 +4,11 @@ import type { FC } from 'react';
 import { useRequest } from 'umi';
 import { testData } from './dataLoader';
 
-import PieCard from './components/PieCard';
-import GaugeCard from './components/GaugeCard';
-import ColumnCard from './components/ColumnCard';
-import TableCard from './components/TableCard';
-import type { OeeGauge } from './service/types';
+import PieCard from '../../MESAPS/components/PieCard';
+import GaugeCard from '../../MESAPS/components/GaugeCard';
+import ColumnCard from '../../MESAPS/components/ColumnCard';
+import TableCard from '../../MESAPS/components/TableCard';
+import type { OeeGauge } from '../../MESAPS/service/types';
 
 type AnalysisProps = {
   loading: boolean;

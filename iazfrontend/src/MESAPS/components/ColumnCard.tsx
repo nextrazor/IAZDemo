@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import type { FC } from 'react';
-import type { ColumnProps } from '../service/types';
+import type { ColumnProps } from '../../MESAPS/service/types';
 import { Column } from '@ant-design/plots';
 
 const ColumnCard: FC<ColumnProps> = (props: ColumnProps) => {

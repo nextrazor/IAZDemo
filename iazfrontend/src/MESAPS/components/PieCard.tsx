@@ -3,7 +3,7 @@ import type { FC } from 'react';
 //import React, { useState, useEffect } from 'react';
 //import { useRequest } from 'umi';
 //import {  testData, DataItem } from '../dataLoader';
-import type { AnalysisProps } from '../service/types';
+import type { AnalysisProps } from '../../MESAPS/service/types';
 import { Pie } from '@ant-design/charts';
 
 const PieCard: FC<AnalysisProps> = (props: AnalysisProps) => {

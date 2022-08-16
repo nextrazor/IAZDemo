@@ -1,10 +1,7 @@
-import { Card } from 'antd';
 import type { FC } from 'react';
 import { useRef } from 'react';
-import { Store, StoreConfig, ModelConfig } from '@bryntum/taskboard';
-import { TaskBoard } from '@bryntum/taskboard';
 import { BryntumTaskBoard } from '@bryntum/taskboard-react';
-import type { KanbanProps } from '../../customDashboard/service/types';
+import type { KanbanProps } from '../../MESAPS/service/types';
 import { TaskBoardConfig } from '@bryntum/taskboard';
 import '@bryntum/taskboard/taskboard.stockholm.css';
 

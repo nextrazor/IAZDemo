@@ -6,7 +6,7 @@ import { useRequest } from 'umi';
 import { testData } from './dataLoader';
 // import { useRequest } from 'umi';
 
-import KanbanCard from './components/KanbanCard';
+import KanbanCard from '../../MESAPS/components/KanbanCard';
 
 type AnalysisProps = {
   loading: boolean;
@@ -19,7 +19,7 @@ const CustomDash: FC<AnalysisProps> = () => {
     // <GridContent>
     //   <Row gutter={24}>
     //     <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-    <KanbanCard columns={data?.columns || []} loading={false} />
+    <KanbanCard columns={data?.columns || []} loading={loading} />
     //     </Col>
     //     {/* <Col xl={8} lg={12} md={12} sm={24} xs={24}>
     //       <PieCard title="Состояние заказов" data={data?.lateOrders.data || []} loading={loading} />
