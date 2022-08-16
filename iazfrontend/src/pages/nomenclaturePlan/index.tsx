@@ -5,6 +5,10 @@ import styles from './style.less';
 import { useRequest } from 'umi';
 import { testData } from './dataLoader';
 import moment from 'moment';
+import { history } from 'umi';
+//  import { useNavigate } from 'umi';
+//import router from 'umi/router';
+
 import {
   Avatar,
   Button,
@@ -67,12 +71,9 @@ const ListContent = ({
   </div>
 );
 
-const GoToGantt = (item: string) => {
-  console.log(item);
-};
-
 const CustomDash: FC<AnalysisProps> = () => {
   const { loading, data } = useRequest(testData);
+  //let navigate = useNavigate();
 
   return (
     <div className={styles.standardList}>
@@ -95,7 +96,9 @@ const CustomDash: FC<AnalysisProps> = () => {
                   key="edit"
                   onClick={(e) => {
                     e.preventDefault();
-                    GoToGantt(item.orderNo as string);
+                    history.push('/orderGantt?order=' + item.orderNo);
+                    //router.push('/orderGantt/$' + item.orderNo);
+                    //navigate('/orderGantt/${item.orderNo as string}');
                   }}
                 >
                   Гантт

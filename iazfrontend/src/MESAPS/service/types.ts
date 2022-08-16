@@ -54,6 +54,10 @@ export type KanbanProps = {
   columns: [];
 };
 
+export type GanttProps = {
+  order: string;
+};
+
 export type ColumnsData = {
   columns: [];
 };

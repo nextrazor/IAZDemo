@@ -59,7 +59,7 @@
     "@antv/l7": "^2.3.7",
     "@antv/l7-maps": "^2.3.7",
     "@antv/l7-react": "^2.1.9",
-    "@bryntum/schedulerpro": "npm:@bryntum/schedulerpro-trial@5.1.1",
+    "@bryntum/schedulerpro": "npm:@bryntum/schedulerpro-trial@^5.1.1",
     "@bryntum/schedulerpro-react": "^5.1.1",
     "@bryntum/taskboard": "npm:@bryntum/taskboard-trial@5.1.1",
     "@bryntum/taskboard-react": "^5.1.1",
