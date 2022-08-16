@@ -21,4 +21,19 @@
             set { currentDataset = value; }
         }
     }
+
+    public partial class Order
+    {
+        public double ProgressPercent
+        {
+            get
+            {
+                if ((Quantity <= 0) || (MidBatchQuantity <= 0))
+                    return 0;
+                if (MidBatchQuantity >= Quantity)
+                    return 1;
+                return MidBatchQuantity / Quantity;
+            }
+        }
+    }
 }

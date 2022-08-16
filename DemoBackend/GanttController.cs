@@ -35,7 +35,7 @@ namespace IAZBackend
                 .Where(ord => resources.Contains(ord.Resource!) && ((ord.Resource!.FiniteOrInfinite == (int)ResourceType.Finite) || (ord.OrderNo == orderNo))))
             {
                 ganttData.Add(new Task(order.StartTime!.Value, order.EndTime!.Value, order.ToString(), order.OrderId, order.ResourceId!.Value,
-                    order.OrderNo, Array.Empty<string>(), (int)order.MidBatchQuantity, false, GetHighlightType(order, orderNo)));
+                    order.OrderNo, Array.Empty<string>(), order.ProgressPercent, false, GetHighlightType(order, orderNo)));
             }
             return ganttData;
         }

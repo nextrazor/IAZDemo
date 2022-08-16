@@ -78,7 +78,7 @@ namespace IAZBackend
         public string name { get; set; }
         public int id { get; set; }
         public string type { get; set; }
-        public int progress { get; set; }
+        public double progress { get; set; }
         public int displayOrder { get; set; }
         public HighlightType highlightType { get; set; }
 
@@ -94,11 +94,11 @@ namespace IAZBackend
         public string name { get; set; }
         public int id { get; set; }
         public string type { get; set; }
-        public int progress { get; set; }
+        public double progress { get; set; }
         public int displayOrder { get; set; }
         public HighlightType highlightType { get; set; }
 
-        public Project(DateTime start, DateTime end, string name, int id, int progress, HighlightType highlightType)
+        public Project(DateTime start, DateTime end, string name, int id, double progress, HighlightType highlightType)
         {
             this.startDate = start;
             this.endDate = end;
@@ -126,7 +126,7 @@ namespace IAZBackend
         public int id { get; set; }
         public int resourceId { get; set; }
         public string type { get; set; }
-        public int progress { get; set; }
+        public double progress { get; set; }
         public int displayOrder { get; set; }
         public HighlightType highlightType { get; set; }
 
@@ -134,7 +134,7 @@ namespace IAZBackend
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Task(DateTime start, DateTime end, string name, int id, int resourceId, string project, string[] dependencies, int progress, bool isDisabled, HighlightType highlightType)
+        public Task(DateTime start, DateTime end, string name, int id, int resourceId, string project, string[] dependencies, double progress, bool isDisabled, HighlightType highlightType)
         {
             this.startDate = start;
             this.endDate = end;
@@ -165,7 +165,7 @@ namespace IAZBackend
         public string name { get; set; }
         public int id { get; set; }
         public string type { get; set; }
-        public int progress { get; set; }
+        public double progress { get; set; }
         public int displayOrder { get; set; }
         public HighlightType highlightType { get; set; }
 
@@ -173,7 +173,7 @@ namespace IAZBackend
         public string[] dependencies = new string[] { };
         public bool isDisabled;
 
-        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[] dependencies, int progress, bool isDisabled, HighlightType highlightType)
+        public Milestone(DateTime start, DateTime end, string name, int id, string project, string[] dependencies, double progress, bool isDisabled, HighlightType highlightType)
         {
             this.startDate = start;
             this.endDate = end;
