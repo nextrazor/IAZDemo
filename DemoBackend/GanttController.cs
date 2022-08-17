@@ -6,24 +6,46 @@ namespace IAZBackend
 {
     public static class GanttController
     {
-        public static BryntumGanttData GetGanttDataForOrder(Dataset dataset, string orderNo)
+        /// <summary>
+        /// Получение данных для диаграммы Гантта
+        /// </summary>
+        /// <param name="dataset">набор данных, из которого получаем данные</param>
+        /// <param name="orderNo">выделяемый заказ (если null или string.Empty - выделения нет)</param>
+        /// <param name="showOnlyOrderResources">
+        /// true - показать только ресурсы, которые используются для выделенного заказа
+        /// false - показать все ресурсы
+        /// </param>
+        /// <param name="showOnlyOrderManualOperation">
+        /// true - показать только те ручные операции, которые относятся к выделенному заказу
+        /// false - показать все ручные операции
+        /// </param>
+        /// <returns> Данные для диаграммы </returns>
+        public static BryntumGanttData GetGanttDataForOrder(Dataset dataset, string? orderNo, bool showOnlyOrderResources, bool showOnlyOrderManualOperation)
         {
-            const double EXTEND_RATIO = 1.2;        // насколько шире цикла заказа делать диаграмму Гантта
+            const double EXTEND_RATIO = 1.1;        // насколько шире цикла заказа делать диаграмму Гантта
 
             using IAZ_ApsContext dbContext = new();
-            List<Order> schedOrdOpers = dbContext.Orders
-                .Where(ord => (ord.Dataset == dataset) && (ord.OrderNo == orderNo) && (ord.Resource != null))
-                .OrderBy(ord => ord.OpNo)
-                .ToList();
-            if (!schedOrdOpers.Any())
-                return BryntumGanttData.Empty;
-            List<Models.ApsEntities.Resource> resources = schedOrdOpers
-                .Select(ord => ord.Resource!)
-                .Distinct()
-                .ToList();
+            bool highlighting = !string.IsNullOrEmpty(orderNo);
+            showOnlyOrderResources &= highlighting;
+            showOnlyOrderManualOperation &= highlighting;
+            List<Order>? schedOrdOpers = null;
+            if (highlighting)
+            {
+                schedOrdOpers = dbContext.Orders
+                    .Where(ord => (ord.Dataset == dataset) && (ord.OrderNo == orderNo) && (ord.Resource != null))
+                    .OrderBy(ord => ord.OpNo)
+                    .ToList();
+                if (!schedOrdOpers.Any())
+                    return BryntumGanttData.Empty;
+            }
+            List<Models.ApsEntities.Resource> resources = showOnlyOrderResources ?
+                schedOrdOpers!
+                    .Select(ord => ord.Resource!)
+                    .Distinct()
+                    .ToList() :
+                dbContext.Resources.ToList();
             BryntumGanttData ganttData = new();
-            int resId = 1;
-            ganttData.resources.rows.AddRange(dbContext.Resources   //resources
+            ganttData.resources.rows.AddRange(resources
                 .OrderByDescending(r => r.FiniteOrInfinite)
                 .ThenBy(r => r.Name)
                 .Select(r => new BryntumResource()
@@ -32,16 +54,27 @@ namespace IAZBackend
                     name = r.Name,
                     iconCls = GetResourceIcon(r)
                 }));
-            DateTime start = schedOrdOpers.Min(ord => ord.StartTime)!.Value;
-            DateTime finish = schedOrdOpers.Max(ord => ord.EndTime)!.Value;
-            TimeSpan delta = TimeSpan.FromDays((finish - start).TotalDays * EXTEND_RATIO / 2);
-            start -= delta;
-            finish += delta;
+            DateTime start = DateTime.MinValue;
+            DateTime finish = DateTime.MaxValue;
+            if (highlighting)
+            {
+                start = schedOrdOpers!.Min(ord => ord.StartTime)!.Value;
+                finish = schedOrdOpers!.Max(ord => ord.EndTime)!.Value;
+                TimeSpan delta = TimeSpan.FromDays((finish - start).TotalDays * EXTEND_RATIO / 2);
+                start -= delta;
+                finish += delta;
+            }
             var ganttOrders = dbContext.Orders
                 .Where(ord => (ord.Dataset == Dataset.CurrentDataset) && (ord.Resource != null) && (ord.StartTime < finish) && (ord.EndTime > start))
-                .ToList()
-                .Where(ord => /*resources.Contains(ord.Resource!) &&*/ ((ord.Resource!.FiniteOrInfinite == (int)ResourceType.Finite) || (ord.OrderNo == orderNo)))
                 .ToList();
+            if (showOnlyOrderResources)
+                ganttOrders = ganttOrders
+                    .Where(ord => resources.Contains(ord.Resource!))
+                    .ToList();
+            if (showOnlyOrderManualOperation)
+                ganttOrders = ganttOrders
+                    .Where(ord => (ord.Resource!.FiniteOrInfinite == (int)ResourceType.Finite) || (ord.OrderNo == orderNo))
+                    .ToList();
             ColorSelector colorSelector = new();
             ganttData.events.rows.AddRange(ganttOrders
                 .Select(ord => new BryntumEvent()
@@ -52,7 +85,9 @@ namespace IAZBackend
                     duration = (ord.EndTime!.Value - ord.StartTime!.Value).TotalHours,
                     iconCls = GetOperIcon(ord),
                     percentDone = (int)(ord.ProgressPercent * 100),
-                    eventColor = ord.OrderNo == orderNo ? "red" : "gray" //colorSelector.GetColor(ord.OrderNo)
+                    eventColor = highlighting ?
+                        (ord.OrderNo == orderNo ? "red" : "gray") :
+                        colorSelector.GetColor(ord.OrderNo)
                 }));
             int assId = 1;
             ganttData.assignments.rows.AddRange(ganttOrders
@@ -60,18 +95,21 @@ namespace IAZBackend
                 {
                     id = assId++,
                     eventId = ord.OrderId,
-                    resource = ord.ResourceId.Value
+                    resource = ord.ResourceId!.Value
                 }));
-            int depId = 1;
-            for (int i = 0; i < schedOrdOpers.Count - 1; i++)
+            if (highlighting)
             {
-                ganttData.dependencies.rows.Add(new BryntumDependency()
+                int depId = 1;
+                for (int i = 0; i < schedOrdOpers!.Count - 1; i++)
                 {
-                    id = depId++,
-                    fromEvent = schedOrdOpers[i].OrderId,
-                    toEvent = schedOrdOpers[i + 1].OrderId,
-                    lag = (int)(schedOrdOpers[i + 1].StartTime.Value - schedOrdOpers[i].EndTime.Value).TotalSeconds
-                });
+                    ganttData.dependencies.rows.Add(new BryntumDependency()
+                    {
+                        id = depId++,
+                        fromEvent = schedOrdOpers[i].OrderId,
+                        toEvent = schedOrdOpers[i + 1].OrderId,
+                        lag = (int)(schedOrdOpers[i + 1].StartTime!.Value - schedOrdOpers[i].EndTime!.Value).TotalSeconds
+                    });
+                }
             }
             return ganttData;
         }
@@ -100,8 +138,8 @@ namespace IAZBackend
             if (name.Contains("размет")) return "b-fa b-fa-highlighter-line";
             if (name.Contains("раскрой")) return "b-fa b-fa-scissors";
             if (name.Contains("сверлил")) return "b-fa b-fa-bore-hole";
-            if (name.Contains("слесарн")) return "b-fa b-fa-fan";//"b-fa b-fa-hammer- crash";
-            if (name.Contains("транспортир")) return "b-fa b-fa-truck";//"b-fa b-fa-cart-flatbed-boxes";
+            if (name.Contains("слесарн")) return "b-fa b-fa-fan";
+            if (name.Contains("транспортир")) return "b-fa b-fa-truck";
             if (name.Contains("упаков")) return "b-fa b-fa-box";
             if (name.Contains("установ")) return "b-fa b-fa-arrow-down-to-line";
             if (name.Contains("фрезер")) return "b-fa b-fa-fan";

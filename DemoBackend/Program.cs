@@ -78,9 +78,12 @@ app.MapGet("/demands", () =>
 })
 .WithName("GetDemands");
 
-app.MapGet("/ordergantt/{orderNo}", (string orderNo) =>
+app.MapGet("/ordergantt/{orderNo:maxlength(99)}/{showOnlyOrderResources:bool=true}/{showOnlyOrderManualOperation:bool=true}",
+    (string? orderNo, bool showOnlyOrderResources, bool showOnlyOrderManualOperation) =>
 {
-    BryntumGanttData ganttData = GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo);
+    if (orderNo == "undefined")
+        orderNo = null;
+    BryntumGanttData ganttData = GanttController.GetGanttDataForOrder(Dataset.CurrentDataset, orderNo, showOnlyOrderResources, showOnlyOrderManualOperation);
     return JsonConvert.SerializeObject(ganttData);
 })
 .WithName("GetOrderGantt");

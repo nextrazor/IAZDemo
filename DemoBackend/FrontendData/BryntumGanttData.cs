@@ -5,7 +5,7 @@ namespace IAZBackend.FrontendData
     [Serializable]
     public class BryntumGanttData
     {
-        static BryntumGanttData? empty = new();
+        static BryntumGanttData empty = new();
         public static BryntumGanttData Empty => empty;
 
         public BryntumResourceCollection resources { get; set; } = new();
