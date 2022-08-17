@@ -54,6 +54,10 @@ export type KanbanProps = {
   columns: [];
 };
 
+export type CalendarProps = {
+  loading: boolean;
+};
+
 export type GanttProps = {
   order: string;
 };
