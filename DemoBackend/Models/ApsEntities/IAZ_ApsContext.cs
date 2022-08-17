@@ -50,7 +50,7 @@ namespace IAZBackend.Models.ApsEntities
 
             modelBuilder.Entity<OrderSecConstraint>()
                 .HasOne(osc => osc.SecConstraint)
-                .WithMany()
+                .WithMany(sc => sc.OrderSecConstraints)
                 .HasForeignKey(osc => osc.SecConstraintId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
