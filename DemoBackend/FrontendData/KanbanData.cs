@@ -9,6 +9,7 @@ namespace IAZBackend.FrontendData
         public string text { get; set; } = null!;
         public string color { get; set; } = "gray";
         public string tooltip { get; set; } = string.Empty;
+        public int width { get; set; } = 350;
     }
 
     [Serializable]

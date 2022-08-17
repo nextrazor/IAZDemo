@@ -1,6 +1,6 @@
 ﻿namespace IAZBackend.Models.ApsEntities
 {
-    public class SecConstraint
+    public partial class SecConstraint
     {
         public int SecConstraintId { get; set; }
         public string Name { get; set; } = string.Empty;

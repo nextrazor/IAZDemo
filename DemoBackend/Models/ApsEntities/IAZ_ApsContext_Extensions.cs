@@ -61,4 +61,33 @@
         /// </summary>
         public double ProducedLabour => FullLabour * ProgressPercent;
     }
+
+    public partial class SecConstraint
+    {
+        WorkerData? personalData;
+        public WorkerData PersonalData
+        {
+            get
+            {
+                if (personalData == null)
+                {
+                    personalData = new();
+                    string[] parts = Name.Split(' ');
+                    if (parts.Length > 0) personalData.Number = parts[0];
+                    if (parts.Length > 1) personalData.LastName = parts[1];
+                    if (parts.Length > 2) personalData.FirstName = parts[2];
+                    if (parts.Length > 3) personalData.MiddleName = parts[3];
+                }
+                return personalData!;
+            }
+        }
+
+        public class WorkerData
+        {
+            public string Number = string.Empty;
+            public string LastName = string.Empty;
+            public string FirstName = string.Empty;
+            public string MiddleName = string.Empty;
+        }
+    }
 }

@@ -17,7 +17,7 @@ namespace IAZBackend
                 .Select(wr => new KanbanColumnData()
                 {
                     id = wr.SecConstraintId.ToString(),
-                    text = wr.Name,
+                    text = $"{wr.PersonalData.Number} {wr.PersonalData.LastName} {wr.PersonalData.FirstName}",
                     color = colorSelector.GetColor(wr.ProfessionCode),
                     tooltip = $"{wr.Name}<br>Код профессии: {wr.ProfessionCode}<br>Произв. группы: {GetWorkerGroupsStr(wr)}"
                 })
