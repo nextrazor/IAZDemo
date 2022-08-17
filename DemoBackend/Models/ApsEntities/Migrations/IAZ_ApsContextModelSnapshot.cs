@@ -36,7 +36,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasKey("DatasetId");
 
-                    b.ToTable("Orders_Dataset");
+                    b.ToTable("Orders_Dataset", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.Order", b =>
@@ -101,7 +101,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasIndex("ResourceId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.OrderLink", b =>
@@ -121,7 +121,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasIndex("ToOrderId", "DatasetId");
 
-                    b.ToTable("OrderLinks");
+                    b.ToTable("OrderLinks", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.OrderSecConstraint", b =>
@@ -153,7 +153,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasIndex("OrderId", "DatasetId");
 
-                    b.ToTable("OrderSecConstraints");
+                    b.ToTable("OrderSecConstraints", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.Resource", b =>
@@ -173,7 +173,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasKey("ResourceId");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resources", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.SecConstraint", b =>
@@ -198,7 +198,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasKey("SecConstraintId");
 
-                    b.ToTable("SecConstraints");
+                    b.ToTable("SecConstraints", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.Workgroup", b =>
@@ -211,7 +211,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasKey("Number");
 
-                    b.ToTable("Workgroups");
+                    b.ToTable("Workgroups", (string)null);
                 });
 
             modelBuilder.Entity("SecConstraintWorkgroup", b =>
@@ -226,7 +226,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
 
                     b.HasIndex("WorkgroupsNumber");
 
-                    b.ToTable("SecConstraintWorkgroup");
+                    b.ToTable("SecConstraintWorkgroup", (string)null);
                 });
 
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.Order", b =>

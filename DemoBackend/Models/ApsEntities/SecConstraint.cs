@@ -7,6 +7,7 @@
         public string TypeName { get; set; } = string.Empty;
         public string ProfessionCode { get; set; } = string.Empty;
         public virtual List<Workgroup> Workgroups { get; set; } = new List<Workgroup>();
+        public virtual List<OrderSecConstraint> OrderSecConstraints { get; set; } = new List<OrderSecConstraint>();
 
         public override string ToString() => Name;
     }

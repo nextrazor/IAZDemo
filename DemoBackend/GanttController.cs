@@ -74,7 +74,7 @@ namespace IAZBackend
                 ganttOrders = ganttOrders
                     .Where(ord => (ord.Resource!.FiniteOrInfinite == (int)ResourceType.Finite) || (ord.OrderNo == orderNo))
                     .ToList();
-            ColorSelector colorSelector = new();
+            ColorSelector colorSelector = new(ColorSelector.GanttColors);
             ganttData.events.rows.AddRange(ganttOrders
                 .Select(ord => new BryntumEvent()
                 {
@@ -148,9 +148,9 @@ namespace IAZBackend
 
     class ColorSelector
     {
-        string[] colors = new string[]
+        public static string[] GanttColors = new string[]
         {
-//            "red",        // испольлзуется для особых целей и не выбирается автоматически
+//            "red",        // используется для подсветки заказа и не выбирается автоматически
             "pink",
             "purple",
             "violet",
@@ -166,6 +166,29 @@ namespace IAZBackend
             "gray",
             "gantt-green"
         };
+        public static string[] KanbanColors = new string[]
+        {
+            "red",
+            "pink",
+            "purple",
+            "deep-purple",
+            "indigo",
+            "blue",
+            "light-blue",
+            "cyan",
+            "teal",
+            "green",
+            "light-green",
+            "lime",
+            "yellow",
+            "amber",
+            "orange",
+            "deep-orang"
+        };
+
+        string[] availableColors;
+
+        public ColorSelector(string[] colors) => availableColors = colors;
 
         Dictionary<string, int> tagColors = new Dictionary<string, int>();
         Random rnd = new();
@@ -174,10 +197,10 @@ namespace IAZBackend
         {
             if (!tagColors.ContainsKey(tag))
             {
-                int tagIndex = rnd.Next(colors.Length);
+                int tagIndex = rnd.Next(availableColors.Length);
                 tagColors.Add(tag, tagIndex);
             }
-            return colors[tagColors[tag]];
+            return availableColors[tagColors[tag]];
         }
     }
 }

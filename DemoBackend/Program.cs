@@ -73,19 +73,21 @@ app.MapGet("/workers", () =>
 })
 .WithName("GetWorkers");
 
-app.MapGet("/kanban", () =>
-{
-    string workers = "{\"resources\": {\"rows\": [{\"id\": 1, \"name\": \"Angelo\"},{\"id\": 2,\"name\": \"Celia\"}]}, \"tasks\": {\"rows\": [{\"id\": 1,\"name\": \"Book flight\",\"status\": \"done\",\"prio\": \"medium\"},{\"id\": 2,\"name\": \"Book hotel\",\"status\": \"done\",\"prio\": \"medium\"}]},\"assignments\": { \"rows\": [{\"id\": 1,\"event\": 1,\"resource\": 1},{\"id\": 2, \"event\": 2,\"resource\": 2}] }}";
-
-    return workers;
-})
-.WithName("GetKanban");
-
 app.MapGet("/kanbanColumns/{groupNumber:int:max(100):required=1}", (int groupNumber) =>
 {
     return "{ \"data\":{ \"columns\":" + JsonConvert.SerializeObject(MasterKanbanController.GetKanbanColumns(groupNumber)) + "}}";
 })
 .WithName("GetKanbanColumns");
+
+app.MapGet("/kanban/{groupNumber:int:max(100):required=1}/{date:datetime:required=2022-07-01}", (int groupNumber, DateTime date) =>
+{
+    return JsonConvert.SerializeObject(MasterKanbanController.GetKanbanTasks(Dataset.CurrentDataset, groupNumber, date));
+
+    string workers = "{\"resources\": {\"rows\": [{\"id\": 1, \"name\": \"Angelo\"},{\"id\": 2,\"name\": \"Celia\"}]}, \"tasks\": {\"rows\": [{\"id\": 1,\"name\": \"Book flight\",\"status\": \"done\",\"prio\": \"medium\"},{\"id\": 2,\"name\": \"Book hotel\",\"status\": \"done\",\"prio\": \"medium\"}]},\"assignments\": { \"rows\": [{\"id\": 1,\"event\": 1,\"resource\": 1},{\"id\": 2, \"event\": 2,\"resource\": 2}] }}";
+
+    return workers;
+})
+.WithName("GetKanban");
 
 app.MapGet("/additionalGroups", () =>
 {
