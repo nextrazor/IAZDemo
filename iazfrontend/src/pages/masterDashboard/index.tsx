@@ -1,5 +1,3 @@
-import { GridContent } from '@ant-design/pro-layout';
-import { Col, Row } from 'antd';
 import type { FC } from 'react';
 
 import { useRequest } from 'umi';
