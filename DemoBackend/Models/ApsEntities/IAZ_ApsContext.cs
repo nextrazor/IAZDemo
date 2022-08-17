@@ -12,7 +12,7 @@ namespace IAZBackend.Models.ApsEntities
         public DbSet<Resource> Resources { get; set; } = null!;
         public DbSet<SecConstraint> SecConstraints { get; set; } = null!;
         public DbSet<OrderSecConstraint> OrderSecConstraints { get; set; } = null!;
-
+        public DbSet<Workgroup> Workgroups { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
