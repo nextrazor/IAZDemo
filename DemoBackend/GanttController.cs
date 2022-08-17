@@ -1,6 +1,5 @@
 ﻿using IAZBackend.Models.ApsEntities;
 using IAZBackend.FrontendData;
-using Newtonsoft.Json;
 
 namespace IAZBackend
 {
@@ -151,7 +150,7 @@ namespace IAZBackend
     {
         string[] colors = new string[]
         {
-//            "red",
+//            "red",        // испольлзуется для особых целей и не выбирается автоматически
             "pink",
             "purple",
             "violet",

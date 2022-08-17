@@ -25,8 +25,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
                 name: "Workgroups",
                 columns: table => new
                 {
-                    Number = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<int>(type: "int", nullable: false),
                     IsServiceGroup = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

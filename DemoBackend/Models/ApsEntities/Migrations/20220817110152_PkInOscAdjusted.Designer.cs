@@ -4,6 +4,7 @@ using IAZBackend.Models.ApsEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IAZBackend.Models.ApsEntities.Migrations
 {
     [DbContext(typeof(IAZ_ApsContext))]
-    partial class IAZ_ApsContextModelSnapshot : ModelSnapshot
+    [Migration("20220817110152_PkInOscAdjusted")]
+    partial class PkInOscAdjusted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +137,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
                     b.Property<int>("SecConstraintId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<double>("ConstraintQuantity")
@@ -144,7 +146,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
                     b.Property<int>("ConstraintUsage")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("DatasetId", "OrderId", "SecConstraintId", "StartTime");

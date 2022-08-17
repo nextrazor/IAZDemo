@@ -4,6 +4,7 @@ using IAZBackend.Models.ApsEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IAZBackend.Models.ApsEntities.Migrations
 {
     [DbContext(typeof(IAZ_ApsContext))]
-    partial class IAZ_ApsContextModelSnapshot : ModelSnapshot
+    [Migration("20220817100154_WorkgroupsAndAssignmentTimes")]
+    partial class WorkgroupsAndAssignmentTimes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,19 +137,19 @@ namespace IAZBackend.Models.ApsEntities.Migrations
                     b.Property<int>("SecConstraintId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<double>("ConstraintQuantity")
                         .HasColumnType("float");
 
                     b.Property<int>("ConstraintUsage")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("DatasetId", "OrderId", "SecConstraintId", "StartTime");
+                    b.Property<DateTime?>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DatasetId", "OrderId", "SecConstraintId");
 
                     b.HasIndex("SecConstraintId");
 
@@ -185,10 +187,6 @@ namespace IAZBackend.Models.ApsEntities.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SecConstraintId"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfessionCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

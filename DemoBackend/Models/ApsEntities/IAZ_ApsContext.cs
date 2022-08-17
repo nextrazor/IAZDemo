@@ -40,7 +40,7 @@ namespace IAZBackend.Models.ApsEntities
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<OrderSecConstraint>()
-                .HasKey(osc => new { osc.DatasetId, osc.OrderId, osc.SecConstraintId });
+                .HasKey(osc => new { osc.DatasetId, osc.OrderId, osc.SecConstraintId, osc.StartTime });
 
             modelBuilder.Entity<OrderSecConstraint>()
                 .HasOne(osc => osc.Order)

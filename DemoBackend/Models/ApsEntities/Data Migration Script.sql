@@ -1,7 +1,9 @@
 DELETE [OrderSecConstraints]
 DELETE [OrderLinks]
 DELETE [Orders]
+DELETE [SecConstraintWorkgroup]
 DELETE [SecConstraints]
+DELETE [Workgroups]
 DELETE [Resources]
 DELETE [Orders_Dataset]
 
@@ -19,13 +21,25 @@ FROM [IAZ Preactor Source].[UserData].[Resources]
 GO
 SET IDENTITY_INSERT [Resources] OFF
 
+INSERT INTO Workgroups (Number, IsServiceGroup)
+SELECT GroupNumber, ServiceGroup
+FROM [IAZ Preactor Source].[UserData].[WorkGroups]
+WHERE Workshop = 221
+GO
+
 SET IDENTITY_INSERT [SecConstraints] ON
-INSERT INTO [SecConstraints] (SecConstraintId, Name, TypeName)
-SELECT SecondaryConstraintsId, SecondaryConstraints.Name, SecondaryConstraintTypes.Name
+INSERT INTO [SecConstraints] (SecConstraintId, Name, TypeName, ProfessionCode)
+SELECT SecondaryConstraintsId, SecondaryConstraints.Name, SecondaryConstraintTypes.Name, ProfessionCode
 FROM [IAZ Preactor Source].[UserData].[SecondaryConstraints]
 	join [IAZ Preactor Source].[UserData].[SecondaryConstraintTypes] on SecondaryConstraints.SecondaryConstraintTypeName = SecondaryConstraintTypes.SecondaryConstraintTypesId
 GO
 SET IDENTITY_INSERT [SecConstraints] OFF
+
+INSERT INTO SecConstraintWorkgroup([WorkersSecConstraintId], [WorkgroupsNumber])
+SELECT wgw.Workers, wg.GroupNumber
+FROM [IAZ Preactor Source].[UserData].[WorkGroupsWorkers] wgw
+	JOIN [IAZ Preactor Source].[UserData].[WorkGroups] wg on wgw.WorkGroupsId = wg.WorkGroupsId and wg.Workshop = 221
+GO
 
 INSERT INTO [Orders] (OrderId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, ResourceId, PartNo,
 	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime)
@@ -42,9 +56,20 @@ WHERE exists (select * from Orders ord where ord.DatasetId = ol.DatasetId and or
 	exists (select * from Orders ord where ord.DatasetId = ol.DatasetId and ord.OrderId = ol.ToInternalDemandOrder)
 GO
 
-INSERT INTO [OrderSecConstraints] (DatasetId, OrderId, SecConstraintId, ConstraintUsage, ConstraintQuantity)
-SELECT DatasetId, OrdersId, SecondaryConstraints, ConstraintUsage, ConstraintQuantity
+INSERT INTO [OrderSecConstraints] (DatasetId, OrderId, SecConstraintId, ConstraintUsage, ConstraintQuantity, StartTime, EndTime)
+SELECT DatasetId, OrdersId, SecondaryConstraints, ConstraintUsage, ConstraintQuantity, cast('20000101' as datetime), cast('20000101' as datetime)
 FROM [IAZ Preactor Source].[UserData].[OrdersSecondaryConstraints] osc
 WHERE exists (select * from Orders ord where ord.DatasetId = osc.DatasetId and ord.OrderId = osc.OrdersId)
-	and exists (select * from [IAZ Preactor Source].UserData.SecondaryConstraints sc where sc.SecondaryConstraintsId = osc.SecondaryConstraints)
+	and exists (select * from SecConstraints sc where sc.SecConstraintId = osc.SecondaryConstraints)
+GO
+
+INSERT INTO [OrderSecConstraints] (DatasetId, OrderId, SecConstraintId, ConstraintUsage, ConstraintQuantity, StartTime, EndTime)
+SELECT wsao.DatasetId, ord.OrdersId, sc.SecondaryConstraintsId, 100, 1, wsao.OperationStart, wsao.OperationStart + wsao.OperationDuration OperationEnd
+FROM [IAZ Preactor Source].UserData.WorkerShiftsAttachedOperations wsao
+	join [IAZ Preactor Source].UserData.WorkerShifts ws on wsao.DatasetId = ws.DatasetId and wsao.WorkerShiftsId = ws.WorkerShiftsId
+	join [IAZ Preactor Source].UserData.Workers wr on ws.Worker = wr.WorkersId
+	join [IAZ Preactor Source].UserData.SecondaryConstraints sc on sc.Name like wr.WorkerCode + '%'
+	join [IAZ Preactor Source].UserData.Orders ord on wsao.DatasetId = ord.DatasetId and wsao.AttachedOperations = ord.OrdersId
+WHERE exists (select * from Orders where DatasetId = ord.DatasetId and OrderId = ord.OrdersId)
+	and exists (select * from SecConstraints sc where sc.SecConstraintId = sc.SecConstraintId)
 GO

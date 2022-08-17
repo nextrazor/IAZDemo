@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IAZBackend.Models.ApsEntities.Migrations
 {
     [DbContext(typeof(IAZ_ApsContext))]
-    [Migration("20220817093112_WorkgroupsAndAssignmentTimes")]
-    partial class WorkgroupsAndAssignmentTimes
+    [Migration("20220817101716_AddProfCode")]
+    partial class AddProfCode
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -190,6 +190,10 @@ namespace IAZBackend.Models.ApsEntities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProfessionCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -202,10 +206,7 @@ namespace IAZBackend.Models.ApsEntities.Migrations
             modelBuilder.Entity("IAZBackend.Models.ApsEntities.Workgroup", b =>
                 {
                     b.Property<int>("Number")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"), 1L, 1);
 
                     b.Property<bool>("IsServiceGroup")
                         .HasColumnType("bit");

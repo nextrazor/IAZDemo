@@ -35,32 +35,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/testData", () =>
 {
-    /* Тестовые данные для панели KPI
-    var lateOrders = new NamedValue[] { new NamedValue("В срок", 0.8), new NamedValue("Со срывом срока", 0.12), new NamedValue("Не спланированы", 0.08) };
-    var lateOpers = new NamedValue[] { new NamedValue("В срок", 0.9), new NamedValue("Со срывом срока", 0.06), new NamedValue("Не спланированы", 0.04) };
-    var machNames = new string[]
-    {
-        "1696_Центр фрезерный обрабатывающий с ЧПУ",
-        "2157_Центр фрезерный обрабатывающий с ЧПУ",
-        "2086_Центр фрезерный обрабатывающий с ЧПУ",
-        "2197_Центр фрезерный обрабатывающий с ЧПУ"
-    };
-    var loadingData = new LoadingValue[]
-    {
-        new LoadingValue(machNames[0], "Работа", 0.3), new LoadingValue(machNames[0], "Простой", 0.7),new LoadingValue(machNames[0], "Перерыв", 0),
-        new LoadingValue(machNames[1], "Работа", 0.45), new LoadingValue(machNames[1], "Простой", 0.5),new LoadingValue(machNames[1], "Перерыв", 0.05),
-        new LoadingValue(machNames[2], "Работа", 0), new LoadingValue(machNames[2], "Простой", 0.8),new LoadingValue(machNames[2], "Перерыв", 0.2),
-        new LoadingValue(machNames[3], "Работа", 0.5), new LoadingValue(machNames[3], "Простой", 0.4),new LoadingValue(machNames[3], "Перерыв", 0.1)
-    };
-    var ppData = new PainPoint[]
-    {
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CFE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[0]} простаивает больше 3 дней с 12.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CDE2", new string[] { "Оборудование", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, $"{machNames[2]} простаивает больше 6 дней с 19.08.2022"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CCE2", new string[] { "Заказ", PainPointSeverity.Low.ToString() }, PainPointSeverity.Low, "НЗП по заказу M14003941 пролеживает больше 6 дней с 12.08.2022 между операциями 60 и 65"),
-        new PainPoint("8518497D-E6CC-4E81-98BF-0734AAD7CAE2", new string[] { "Заказ", PainPointSeverity.Normal.ToString() }, PainPointSeverity.Normal, $"Заказ 1020_394_Э10.3115.0031.900 просрочен на 12 дней")
-    };
-    KpiPageData kpiData = new KpiPageData(lateOrders, lateOpers, 0.52, loadingData, ppData); */
-
     KpiPageData kpiData = new KpiPageData(
         KpiController.GetLateOrders(),
         KpiController.GetLateOpers(),
@@ -107,10 +81,9 @@ app.MapGet("/kanban", () =>
 })
 .WithName("GetKanban");
 
-app.MapGet("/kanbanColumns", () =>
+app.MapGet("/kanbanColumns/{groupNumber:int:max(100):required=1}", (int groupNumber) =>
 {
-    string workers = "{ \"data\":{ \"columns\":[ { \"id\": \"ОЛЕГ\", \"text\": \"ОЛЕГ\", \"color\": \"orange\" }, { \"id\": \"doing\",  \"text\": \"Doing\", \"color\": \"blue\", \"tooltip\": \"Items that are currently in progress\" }, { \"id\": \"done\", \"text\": \"Done\" }]}}";
-    return workers;
+    return "{ \"data\":{ \"columns\":" + JsonConvert.SerializeObject(MasterKanbanController.GetKanbanColumns(groupNumber)) + "}}";
 })
 .WithName("GetKanbanColumns");
 

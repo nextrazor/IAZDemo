@@ -1,6 +1,5 @@
 ﻿using IAZBackend.FrontendData;
 using IAZBackend.Models.ApsEntities;
-using Microsoft.EntityFrameworkCore;
 
 namespace IAZBackend
 {
