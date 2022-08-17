@@ -56,17 +56,17 @@ namespace IAZBackend
                     .Select(osc => osc.Order)
                     .Where(ord => (ord.Resource != null) && (ord.StartTime < finish) && (ord.EndTime > start)))
                 {
+                    data.assignments.rows.Add(new KanbanAssignment()
+                    {
+                        id = assId++,
+                        eventId = orderId,
+                        resource = workerOrder.ResourceId!.Value
+                    });
                     data.tasks.rows.Add(new KanbanTask()
                     {
                         id = orderId++,
                         name = workerOrder.ToString(),
                         status = worker.SecConstraintId.ToString()
-                    });
-                    data.assignments.rows.Add(new KanbanAssignment()
-                    {
-                        id = assId++,
-                        eventId = workerOrder.OrderId,
-                        resource = workerOrder.ResourceId!.Value
                     });
                 }
             }
