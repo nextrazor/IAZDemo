@@ -12,6 +12,11 @@
   --taskboard-column-header-border-top: 20px solid currentColor;
 }
 
+.b-taskboard-column-header {
+  height: 100px !important;
+  word-break: break-all !important;
+}
+
 .b-theme-classic-dark .b-taskboardbase {
   --taskboard-column-header-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.7);
   --taskboard-column-background: #191919;
