@@ -15,9 +15,12 @@ GO
 SET IDENTITY_INSERT [Orders_Dataset] OFF
 
 SET IDENTITY_INSERT [Resources] ON
-INSERT INTO [Resources] (ResourceId, Name, FiniteOrInfinite)
-SELECT ResourcesId, Name, FiniteOrInfinite
-FROM [IAZ Preactor Source].[UserData].[Resources]
+INSERT INTO [Resources] (ResourceId, Name, FiniteOrInfinite, ResourceGroup)
+SELECT res.ResourcesId, res.Name, res.FiniteOrInfinite, min(rg.Name)
+FROM [IAZ Preactor Source].[UserData].[Resources] res
+	join [IAZ Preactor Source].UserData.ResourceGroupsResources rgr on res.ResourcesId = rgr.Resources
+	join [IAZ Preactor Source].UserData.ResourceGroups rg on rgr.ResourceGroupsId = rg.ResourceGroupsId
+group by res.ResourcesId, res.Name, res.FiniteOrInfinite
 GO
 SET IDENTITY_INSERT [Resources] OFF
 

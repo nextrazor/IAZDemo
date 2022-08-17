@@ -31,6 +31,7 @@ namespace IAZBackend.FrontendData
     {
         public int id { get; set; }
         public string name { get; set; } = null!;
+        public string resourceGroup { get; set; } = null!;
     }
 
     [Serializable]
@@ -45,6 +46,13 @@ namespace IAZBackend.FrontendData
         public int id { get; set; }
         public string name { get; set; } = null!;
         public string status { get; set; } = null!;
+        public DateTime start { get; set; }
+        public DateTime end { get; set; }
+        public TimeSpan labour { get; set; }
+        public string orderNo { get; set; } = null!;
+        public string partNo { get; set; } = null!;
+        public int opNo { get; set; }
+        public string operationName { get; set; } = null!;
     }
 
     [Serializable]

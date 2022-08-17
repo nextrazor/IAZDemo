@@ -53,30 +53,46 @@ namespace IAZBackend
                     .Where(osc => (osc.ConstraintUsage == (int)ConstraintUsage.IncrementForProcessTime) ||
                         ((osc.ConstraintUsage == (int)ConstraintUsage.Cnc) &&
                             (osc.StartTime < finish) && (osc.EndTime > start)))
-                    .Select(osc => osc.Order)
-                    .Where(ord => (ord.Resource != null) && (ord.StartTime < finish) && (ord.EndTime > start)))
+                    .Select(osc => new
+                    {
+                        Order = osc.Order,
+                        StartTime = osc.ConstraintUsage == (int)ConstraintUsage.Cnc ? osc.StartTime : osc.Order.StartTime,
+                        EndTime = osc.ConstraintUsage == (int)ConstraintUsage.Cnc ? osc.EndTime : osc.Order.EndTime
+                    })
+                    .Where(oscd => (oscd.Order.Resource != null) && (oscd.StartTime < finish) && (oscd.EndTime > start)))
                 {
                     data.assignments.rows.Add(new KanbanAssignment()
                     {
                         id = assId++,
                         eventId = orderId,
-                        resource = workerOrder.ResourceId!.Value
+                        resource = workerOrder.Order.ResourceId!.Value
                     });
                     data.tasks.rows.Add(new KanbanTask()
                     {
                         id = orderId++,
-                        name = workerOrder.ToString(),
-                        status = worker.SecConstraintId.ToString()
+                        name = workerOrder.Order.ToString(),
+                        status = worker.SecConstraintId.ToString(),
+                        start = workerOrder.StartTime!.Value,
+                        end = workerOrder.EndTime!.Value,
+                        labour = (workerOrder.EndTime!.Value - workerOrder.StartTime!.Value),
+                        orderNo = workerOrder.Order.OrderNo,
+                        partNo = workerOrder.Order.PartNo,
+                        opNo = workerOrder.Order.OpNo,
+                        operationName = workerOrder.Order.OperationName
                     });
                 }
             }
-            data.resources.rows.AddRange(data.assignments.rows
+            var resources = data.assignments.rows
                 .Select(ass => ass.resource)
                 .Distinct()
-                .Select(resId => new KanbanResource()
-                {
-                    id = resId,
-                    name = dbContext.Resources.Single(res => res.ResourceId == resId).Name
+                .Select(resId => dbContext.Resources.Single(res => res.ResourceId == resId))
+                .ToList();
+            data.resources.rows.AddRange(resources
+                .Select(res => new KanbanResource()
+                 {
+                    id = res.ResourceId,
+                    name = res.Name,
+                    resourceGroup = res.ResourceGroup
                 }));
             KanbanResource? manualResource = data.resources.rows
                 .FirstOrDefault(row => row.name.StartsWith("_"));

@@ -7,6 +7,7 @@ namespace IAZBackend.Models.ApsEntities
         public int ResourceId { get; set; }
         public string Name { get; set; } = null!;
         public int FiniteOrInfinite { get; set; }
+        public string ResourceGroup { get; set; } = string.Empty;
         public virtual List<Order> Orders { get; set; } = new List<Order>();
 
         public string ShortName

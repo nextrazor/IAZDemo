@@ -13,8 +13,9 @@
 }
 
 .b-taskboard-column-header {
-  height: 100px !important;
+  height: 80px !important;
   word-break: break-all !important;
+  overflow-wrap: break-word;
 }
 
 .b-theme-classic-dark .b-taskboardbase {
