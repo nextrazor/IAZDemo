@@ -46,7 +46,19 @@ namespace IAZBackend
                     name = oscd.Order.ToString(),
                     startDate = oscd.StartTime!.Value,
                     endDate = oscd.EndTime!.Value,
-                    iconCls = oscd.Order.GetIcon()
+                    iconCls = oscd.Order.GetIcon(),
+                    dueDate = oscd.Order.DueDate,
+                    finishedQuantity = oscd.Order.MidBatchQuantity,
+                    isMilitary = oscd.Order.IsMilitary,
+                    kitNumber = oscd.Order.KitNumber,
+                    operationName = oscd.Order.OperationName,
+                    opNo = oscd.Order.OpNo,
+                    orderNo = oscd.Order.OrderNo,
+                    partNo = oscd.Order.PartNo,
+                    product = oscd.Order.Product,
+                    projectCode = oscd.Order.ProjectCode,
+                    quantity = oscd.Order.Quantity,
+                    resource = oscd.Order.Resource!.Name
                 }));
             int assId = 1;
             data.assignments.rows.AddRange(orders
