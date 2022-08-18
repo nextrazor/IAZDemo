@@ -59,7 +59,8 @@ namespace IAZBackend
                         StartTime = osc.ConstraintUsage == (int)ConstraintUsage.Cnc ? osc.StartTime : osc.Order.StartTime,
                         EndTime = osc.ConstraintUsage == (int)ConstraintUsage.Cnc ? osc.EndTime : osc.Order.EndTime
                     })
-                    .Where(oscd => (oscd.Order.Resource != null) && (oscd.StartTime < finish) && (oscd.EndTime > start)))
+                    .Where(oscd => (oscd.Order.Resource != null) && (oscd.StartTime < finish) && (oscd.EndTime > start))
+                    .OrderBy(oscd => oscd.StartTime))
                 {
                     data.assignments.rows.Add(new KanbanAssignment()
                     {
