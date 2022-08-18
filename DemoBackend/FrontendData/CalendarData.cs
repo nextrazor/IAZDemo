@@ -47,7 +47,7 @@ namespace IAZBackend.FrontendData
         public string kitNumber { get; set; } = null!;              //
         public int opNo { get; set; }
         public string operationName { get; set; } = null!;
-        public DateTime dueDate { get; set; }
+        public DateTime? dueDate { get; set; }
         public string resource { get; set; } = null!;
         public double quantity { get; set; }
         public double finishedQuantity { get; set; }
