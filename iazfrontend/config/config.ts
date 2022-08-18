@@ -72,6 +72,12 @@ export default defineConfig({
       icon: 'smile',
     },
     {
+      path: '/workerDashboard',
+      name: 'workerDashboard',
+      component: './workerDashboard',
+      icon: 'smile',
+    },
+    {
       path: '/orderGantt',
       name: 'orderGantt',
       component: './orderGantt',

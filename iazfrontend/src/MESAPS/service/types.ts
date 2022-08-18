@@ -55,7 +55,7 @@ export type KanbanProps = {
 };
 
 export type CalendarProps = {
-  loading: boolean;
+  selectedCalendarItem: Function;
 };
 
 export type GanttProps = {

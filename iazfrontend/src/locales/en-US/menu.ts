@@ -53,4 +53,5 @@ export default {
   'menu.customDashboard': 'Planner Dashboard',
   'menu.nomenclaturePlan': 'Nomenclature Plan',
   'menu.orderGantt': 'Order Gantt',
+  'menu.workerDashboard': 'Worker Dashboard',
 };

@@ -3,8 +3,7 @@ import { useRef } from 'react';
 import { BryntumCalendar } from '@bryntum/calendar-react';
 import type { CalendarProps } from '../service/types';
 import { CalendarConfig } from '@bryntum/calendar';
-import '@bryntum/taskboard/taskboard.stockholm.css';
-import './test.css';
+import '@bryntum/calendar/calendar.stockholm.css';
 
 const KanbanCard: FC<CalendarProps> = (props: CalendarProps) => {
   const taskBoardRef = useRef<BryntumCalendar>(null);
@@ -13,7 +12,22 @@ const KanbanCard: FC<CalendarProps> = (props: CalendarProps) => {
   const calendarConfig: Partial<CalendarConfig> = {
     // Field used to pair a task to a column
 
-    date: new Date(2022, 2, 15),
+    date: new Date(),
+
+    modes: {
+      //month: null,
+      year: null,
+      week: null,
+    },
+
+    // onActiveItemChange({ value }) {
+    //   props.selectedCalendarItem(value);
+    // },
+
+    onEventClick(value) {
+      props.selectedCalendarItem(value);
+      console.log(taskBoardRef);
+    },
 
     crudManager: {
       transport: {
