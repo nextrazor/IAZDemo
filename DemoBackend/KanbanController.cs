@@ -92,7 +92,7 @@ namespace IAZBackend
                 .Select(res => new KanbanResource()
                  {
                     id = res.ResourceId,
-                    name = res.Name,
+                    name = (GetShortGroupName(res.ResourceGroup) + " " + res.Name).TrimStart(),
                     resourceGroup = res.ResourceGroup
                 }));
             KanbanResource? manualResource = data.resources.rows
@@ -103,6 +103,14 @@ namespace IAZBackend
                 data.assignments.rows.RemoveAll(ass => ass.resource == manualResource!.id);
             }
             return data;
+        }
+
+        private static string GetShortGroupName(string resourceGroup)
+        {
+            if (resourceGroup.Contains("DMF")) return "DMF";
+            if (resourceGroup.Contains("ВАК")) return "ВАК";
+            if (resourceGroup.Contains("ЭСТ")) return "ЭСТ";
+            return String.Empty;
         }
     }
 }
