@@ -25,34 +25,23 @@ const KanbanCard: FC<CalendarProps> = (props: CalendarProps) => {
     //   props.selectedCalendarItem(value);
     // },
 
-    modes : {
-            day : {
-                // Show avatars in last position
-                showResourceAvatars : 'last'
-            },
-            week : {
-                // Show avatars in last position
-                showResourceAvatars : 'last'
-            }
-        },
-		
-	resourceImagePath : './images/',
-		
-    modeDefaults : {
-        hourHeight : 130,
+    resourceImagePath: './images/',
 
-        // These two settings decide what time span is rendered
-        dayStartTime : 7,
-        dayEndTime   : 22,
+    modeDefaults: {
+      hourHeight: 90,
 
-        // Scroll to 7am initially
-        visibleStartTime : 7,
+      // These two settings decide what time span is rendered
+      dayStartTime: 7,
+      dayEndTime: 20,
 
-        // Hours before 9am and after 5pm will be shaded grey.
-        coreHours : {
-            start : 8,
-            end   : 20
-        }
+      // Scroll to 7am initially
+      visibleStartTime: 7,
+
+      // Hours before 9am and after 5pm will be shaded grey.
+      // coreHours: {
+      //   start: 8,
+      //   end: 20,
+      // },
     },
 
     onEventClick(value) {
