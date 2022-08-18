@@ -45,9 +45,9 @@ FROM [IAZ Preactor Source].[UserData].[WorkGroupsWorkers] wgw
 GO
 
 INSERT INTO [Orders] (OrderId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, ResourceId, PartNo,
-	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime)
+	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime, Product, ProjectCode, KitNumber)
 SELECT OrdersId, DatasetId, StartTime, EndTime, DueDate, OrderNo, OperationName, OpNo, Quantity, MidBatchQuantity, Resource, PartNo,
-	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime
+	IsMilitary, WorkGroup, ProcessTimeType, OpTimePerItem, BatchTime, Product, ProjectCode, KitNumber
 FROM [IAZ Preactor Source].[UserData].[Orders]
 WHERE OrderNo != '' and OperationName != '' and Quantity > 0 and ((Resource is null) or (Resource in (select ResourcesId from [IAZ Preactor Source].[UserData].[Resources])))
 GO

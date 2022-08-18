@@ -4,6 +4,7 @@ using IAZBackend.Models.ApsEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IAZBackend.Models.ApsEntities.Migrations
 {
     [DbContext(typeof(IAZ_ApsContext))]
-    partial class IAZ_ApsContextModelSnapshot : ModelSnapshot
+    [Migration("20220818113614_AdditionalOrderAttrs")]
+    partial class AdditionalOrderAttrs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

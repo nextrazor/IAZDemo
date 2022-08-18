@@ -39,6 +39,19 @@ namespace IAZBackend.FrontendData
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string iconCls { get; set; } = null!;
+
+        public string orderNo { get; set; } = null!;
+        public string partNo { get; set; } = null!;
+        public string product { get; set; } = null!;                //
+        public string projectCode { get; set; } = null!;            //
+        public string kitNumber { get; set; } = null!;              //
+        public int opNo { get; set; }
+        public string operationName { get; set; } = null!;
+        public DateTime dueDate { get; set; }
+        public string resource { get; set; } = null!;
+        public double quantity { get; set; }
+        public double finishedQuantity { get; set; }
+        public bool isMilitary;
     }
 
     [Serializable]

@@ -9,6 +9,9 @@
         public int? ResourceId { get; set; }
         public string OrderNo { get; set; } = string.Empty;
         public string PartNo { get; set; } = string.Empty;
+        public string Product { get; set; } = string.Empty;
+        public string ProjectCode { get; set; } = string.Empty;
+        public string KitNumber { get; set; } = string.Empty;
         public double Quantity { get; set; }
         public int OpNo { get; set; }
         public string OperationName { get; set; } = string.Empty;
