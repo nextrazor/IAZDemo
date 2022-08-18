@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import type { FC } from 'react';
-import type { ColumnProps, DataItem } from '../../MESAPS/service/types';
+import type { ColumnProps } from '../../MESAPS/service/types';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
@@ -106,7 +106,7 @@ const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
 
   return (
     <Card title={props.title} loading={props.loading}>
-      <Table columns={columns} dataSource={props.data as DataItem[]} />
+      <Table columns={columns} dataSource={props.data as unknown as DataType[]} />
     </Card>
   );
 };

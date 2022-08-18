@@ -14,7 +14,7 @@ const KanbanCard: FC<CalendarProps> = (props: CalendarProps) => {
     // Field used to pair a task to a column
 
     date: new Date('2022-07-01'),
-
+    mode: 'day',
     modes: {
       month: null,
       year: null,
@@ -25,7 +25,7 @@ const KanbanCard: FC<CalendarProps> = (props: CalendarProps) => {
     //   props.selectedCalendarItem(value);
     // },
 
-    resourceImagePath: './images/',
+    //resourceImagePath: './images/',
 
     modeDefaults: {
       hourHeight: 90,
@@ -44,9 +44,8 @@ const KanbanCard: FC<CalendarProps> = (props: CalendarProps) => {
       // },
     },
 
-    onEventClick(value) {
-      props.selectedCalendarItem(value);
-      console.log(taskBoardRef);
+    onEventClick(value: { eventRecord: { originalData: any } }) {
+      props.selectedCalendarItem(value.eventRecord.originalData);
     },
 
     crudManager: {

@@ -49,7 +49,7 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
-  'menu.masterDashboard': 'Master Dashboard',
+  'menu.masterDashboard': 'Интерфейс мастера',
   'menu.customDashboard': 'Planner Dashboard',
   'menu.nomenclaturePlan': 'Nomenclature Plan',
   'menu.orderGantt': 'Order Gantt',

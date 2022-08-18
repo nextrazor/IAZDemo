@@ -58,6 +58,11 @@ export type CalendarProps = {
   selectedCalendarItem: Function;
 };
 
+export type OperationProps = {
+  title: string;
+  operation: any;
+};
+
 export type GanttProps = {
   order: string;
 };

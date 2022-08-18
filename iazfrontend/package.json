@@ -65,6 +65,7 @@
     "@bryntum/schedulerpro-react": "^5.1.1",
     "@bryntum/taskboard": "npm:@bryntum/taskboard-trial@5.1.1",
     "@bryntum/taskboard-react": "^5.1.1",
+    "@react-three/fiber": "^8.3.1",
     "@umijs/route-utils": "^2.0.0",
     "ahooks": "^2.0.0",
     "antd": "^4.19.0",
@@ -85,7 +86,9 @@
     "react-dom": "^17.0.0",
     "react-fittext": "^1.0.0",
     "react-helmet-async": "^1.2.0",
+    "react-pdf": "^5.7.2",
     "react-router": "^4.3.1",
+    "three": "^0.143.0",
     "umi": "^3.5.0",
     "umi-serve": "^1.9.10"
   },

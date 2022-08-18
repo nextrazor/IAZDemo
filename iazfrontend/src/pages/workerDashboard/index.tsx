@@ -1,10 +1,15 @@
 import type { FC } from 'react';
+import { GridContent } from '@ant-design/pro-layout';
+import { Col, Row } from 'antd';
+import './style.css';
+import React, { useState } from 'react';
 
 //import { useRequest } from 'umi';
 //import { testData } from './dataLoader';
 // import { useRequest } from 'umi';
 
 import CalendarCard from '../../MESAPS/components/CalendarCard';
+import OperationCard from '../../MESAPS/components/OperationCard';
 
 type AnalysisProps = {
   loading: boolean;
@@ -13,24 +18,30 @@ type AnalysisProps = {
 const CustomDash: FC<AnalysisProps> = () => {
   //const { loading, data } = useRequest(testData);
 
+  const [calendarWidth, setCalendarWidth] = useState(24);
+  const [operaionsCardWidth, setOperaionsWidth] = useState(0);
+  const [selectedOperaion, setOperaion] = useState({});
+
   function selectedCalendarItem(calendarItem: any): any {
+    setOperaion(calendarItem);
     console.log(calendarItem);
+    setCalendarWidth(10);
+    setOperaionsWidth(14);
   }
 
   return (
-    // <GridContent>
-    //   <Row gutter={24}>
-    //     <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-    <CalendarCard selectedCalendarItem={selectedCalendarItem} />
-    //     </Col>
-    //     {/* <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-    //       <PieCard title="Состояние заказов" data={data?.lateOrders.data || []} loading={loading} />
-    //     </Col>
-    //     <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-    //       <PieCard title="Состояние операций" data={data?.lateOpers.data || []} loading={loading} />
-    //     </Col> */}
-    //   </Row>
-    // </GridContent>
+    <GridContent style={{ height: '100%' }}>
+      <Row gutter={24}>
+        <Col xl={calendarWidth}>
+          <CalendarCard selectedCalendarItem={selectedCalendarItem} />
+        </Col>
+        <Col xl={operaionsCardWidth} style={{ height: '100%', width: '30%', float: 'right' }}>
+          <OperationCard title="Состояние заказов" operation={selectedOperaion}>
+            Выберите операцию
+          </OperationCard>
+        </Col>
+      </Row>
+    </GridContent>
   );
 };
 

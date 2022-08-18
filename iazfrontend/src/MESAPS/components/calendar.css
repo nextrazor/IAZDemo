@@ -2,8 +2,8 @@
   font-size: 1em;
 }
 .b-cal-event .b-cal-event-name {
-  margin-inline-start: 0;
   flex: 1;
+  margin-inline-start: 0;
 }
 .b-cal-event small {
   display: block;
@@ -19,10 +19,14 @@
   width: 2em;
   height: 2em;
   border-color: inherit !important;
-  margin-inline-start: -0.6em;
   transition: transform 0.2s;
+  margin-inline-start: -0.6em;
 }
 .b-cal-event .b-cal-event-resource-avatars img:hover {
-  transform: scale(2);
   z-index: 1;
+  transform: scale(2);
+}
+
+.b-sidebar {
+  width: 20%;
 }
