@@ -73,7 +73,7 @@ app.MapGet("/workers", () =>
 })
 .WithName("GetWorkers");
 
-app.MapGet("/calendar/{tabNumber:required=014523}/{date:datetime:required=2022-07-01}", (string tabNumber, DateTime date) =>       // 014523 018564
+app.MapGet("/calendar/{tabNumber:required=026820}/{date:datetime:required=2022-07-01}", (string tabNumber, DateTime date) =>       // 014523 018564
 {
     return JsonConvert.SerializeObject(CalendarController.GetWorkerTasks(Dataset.CurrentDataset, tabNumber, date, date.AddDays(7)));
 })

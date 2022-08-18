@@ -13,6 +13,7 @@ namespace IAZBackend
                 .FirstOrDefault(sc => sc.Name.StartsWith(tabNumber));
             if (worker == null)
                 return data;
+            int oscdId = 1;
             var orders = worker
                 .OrderSecConstraints
                 .Where(osc => (osc.ConstraintUsage == (int)ConstraintUsage.IncrementForProcessTime) ||
@@ -20,6 +21,7 @@ namespace IAZBackend
                         (osc.StartTime < finish) && (osc.EndTime > start)))
                 .Select(osc => new
                 {
+                    Id = oscdId++,
                     Order = osc.Order,
                     StartTime = osc.ConstraintUsage == (int)ConstraintUsage.Cnc ? osc.StartTime : osc.Order.StartTime,
                     EndTime = osc.ConstraintUsage == (int)ConstraintUsage.Cnc ? osc.EndTime : osc.Order.EndTime
@@ -29,6 +31,7 @@ namespace IAZBackend
             data.resources.rows.AddRange(orders
                 .Select(oscd => oscd.Order.Resource!)
                 .Where(r => r.FiniteOrInfinite == (int)ResourceType.Finite)
+                .Distinct()
                 .Select(r => new CalendarResource()
                 {
                     id = r.ResourceId,
@@ -38,7 +41,8 @@ namespace IAZBackend
             data.events.rows.AddRange(orders
                 .Select(oscd => new CalendarEvent()
                 {
-                    id = oscd.Order.OrderId,
+                    id = oscd.Id,
+                    orderId = oscd.Order.OrderId,
                     name = oscd.Order.ToString(),
                     startDate = oscd.StartTime!.Value,
                     endDate = oscd.EndTime!.Value,
@@ -50,7 +54,7 @@ namespace IAZBackend
                 .Select(oscd => new CalendarAssignment()
                 {
                     id = assId++,
-                    eventId = oscd.Order.OrderId,
+                    eventId = oscd.Id,
                     resourceId = oscd.Order.ResourceId!.Value
                 }));
             return data;

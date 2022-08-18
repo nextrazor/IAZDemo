@@ -34,6 +34,7 @@ namespace IAZBackend.FrontendData
     public class CalendarEvent
     {
         public int id { get; set; }
+        public int orderId { get; set; }
         public string name { get; set; } = null!;
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }

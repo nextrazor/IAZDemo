@@ -40,6 +40,8 @@ const KanbanCard: FC<KanbanProps> = (props: KanbanProps) => {
       progress: { type: 'progress' },
     },
 
+	resourceImagePath : './images/',
+		
     // Items added to each task footer
     footerItems: {
       // Team icon + text (using xss protection)
