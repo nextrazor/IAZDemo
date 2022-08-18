@@ -73,10 +73,9 @@ app.MapGet("/workers", () =>
 })
 .WithName("GetWorkers");
 
-app.MapGet("/calendar", () =>
+app.MapGet("/calendar/{tabNumber:required=014523}/{date:datetime:required=2022-07-01}", (string tabNumber, DateTime date) =>       // 014523 018564
 {
-    string data = "{  \"resources\"  : {    \"rows\" : [      {        \"id\"         : \"bryntum\",        \"name\"       : \"Bryntum team\",        \"eventColor\" : \"blue\"      },      {        \"id\"         : \"hotel\",        \"name\"       : \"Hotel Park\",        \"eventColor\" : \"orange\"      },      {        \"id\"         : \"michael\",        \"name\"       : \"Michael Johnson\",        \"eventColor\" : \"deep-orange\"      }    ]  },  \"events\" : {    \"rows\"    : [      {        \"id\"         : 1,        \"startDate\"  : \"2022-03-11T14:00:00\",        \"endDate\"    : \"2022-03-18T12:00:00\",        \"name\"       : \"Hackathon\",        \"allDay\"     : true,        \"resourceId\" : \"bryntum\",        \"eventColor\" : \"green\"      },      {        \"id\"         : 2,        \"startDate\"  : \"2022-03-11T14:00:00\",        \"endDate\"    : \"2022-03-11T18:00:00\",        \"name\"       : \"Check-In in Hotel\",\"resourceId\" : \"hotel\"},{\"id\"         : 3,\"startDate\"  : \"2022-03-11T18:00:00\",\"endDate\"    : \"2022-03-11T20:00:00\",\"name\"       : \"Relax and official arrival beer\", \"allDay\"     : true, \"resourceId\" : \"michael\"}]}}";
-    return data;
+    return JsonConvert.SerializeObject(CalendarController.GetWorkerTasks(Dataset.CurrentDataset, tabNumber, date, date.AddDays(7)));
 })
 .WithName("GetCalendar");
 

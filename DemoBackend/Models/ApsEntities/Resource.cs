@@ -2,7 +2,7 @@
 
 namespace IAZBackend.Models.ApsEntities
 {
-    public class Resource
+    public partial class Resource
     {
         public int ResourceId { get; set; }
         public string Name { get; set; } = null!;

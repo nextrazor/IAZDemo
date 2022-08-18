@@ -51,7 +51,7 @@ namespace IAZBackend
                 {
                     id = r.ResourceId,
                     name = r.Name,
-                    iconCls = GetResourceIcon(r)
+                    iconCls = r.GetIcon()
                 }));
             DateTime start = DateTime.MinValue;
             DateTime finish = DateTime.MaxValue;
@@ -82,7 +82,7 @@ namespace IAZBackend
                     name = $"{ord.OpNo}. {ord.OperationName} по заказу {ord.OrderNo}",
                     startDate = ord.StartTime!.Value,
                     duration = (ord.EndTime!.Value - ord.StartTime!.Value).TotalHours,
-                    iconCls = GetOperIcon(ord),
+                    iconCls = ord.GetIcon(),
                     percentDone = (int)(ord.ProgressPercent * 100),
                     eventColor = highlighting ?
                         (ord.OrderNo == orderNo ? "red" : "gray") :
@@ -111,96 +111,6 @@ namespace IAZBackend
                 }
             }
             return ganttData;
-        }
-
-        private static string GetResourceIcon(Models.ApsEntities.Resource r)
-        {
-            return r.FiniteOrInfinite == (int)ResourceType.Finite ?
-                "b-fa b-fa-tachograph-digital" :
-                "b-fa b-fa-hands";
-        }
-
-        private static string GetOperIcon(Order ord)
-        {
-            string name = ord.OperationName.ToLower();
-            if (name.Contains("чпу")) return "b-fa b-fa-tachograph-digital";
-            if (name.Contains("виброудар")) return "b-fa b-fa-arrows-to-dot";
-            if (name.Contains("дробе")) return "b-fa b-fa-arrows-to-dot";
-            if (name.Contains("гибк")) return "b-fa b-fa-bezier-curve";
-            if (name.Contains("контрол")) return "b-fa b-fa-clipboard";
-            if (name.Contains("консерв")) return "b-fa b-fa-can-food";
-            if (name.Contains("маркир")) return "b-fa b-fa-stamp";
-            if (name.Contains("пломб")) return "b-fa b-fa-award";
-            if (name.Contains("подготов")) return "b-fa b-fa-hand-holding-box";
-            if (name.Contains("правка")) return "b-fa b-fa-screwdriver-wrench";
-            if (name.Contains("протир")) return "b-fa b-fa-broom";
-            if (name.Contains("размет")) return "b-fa b-fa-highlighter-line";
-            if (name.Contains("раскрой")) return "b-fa b-fa-scissors";
-            if (name.Contains("сверлил")) return "b-fa b-fa-bore-hole";
-            if (name.Contains("слесарн")) return "b-fa b-fa-fan";
-            if (name.Contains("транспортир")) return "b-fa b-fa-truck";
-            if (name.Contains("упаков")) return "b-fa b-fa-box";
-            if (name.Contains("установ")) return "b-fa b-fa-arrow-down-to-line";
-            if (name.Contains("фрезер")) return "b-fa b-fa-fan";
-            return "b-fa b-fa-face-head-bandage";
-        }
-    }
-
-    class ColorSelector
-    {
-        public static string[] GanttColors = new string[]
-        {
-//            "red",        // используется для подсветки заказа и не выбирается автоматически
-            "pink",
-            "purple",
-            "violet",
-            "indigo",
-            "blue",
-            "cyan",
-            "teal",
-            "green",
-            "lime",
-            "yellow",
-            "orange",
-            "deep-orange",
-            "gray",
-            "gantt-green"
-        };
-        public static string[] KanbanColors = new string[]
-        {
-            "red",
-            "pink",
-            "purple",
-            "deep-purple",
-            "indigo",
-            "blue",
-            "light-blue",
-            "cyan",
-            "teal",
-            "green",
-            "light-green",
-            "lime",
-            "yellow",
-            "amber",
-            "orange",
-            "deep-orang"
-        };
-
-        string[] availableColors;
-
-        public ColorSelector(string[] colors) => availableColors = colors;
-
-        static Dictionary<string, int> tagColors = new Dictionary<string, int>();
-        Random rnd = new();
-
-        public string GetColor(string tag)
-        {
-            if (!tagColors.ContainsKey(tag))
-            {
-                int tagIndex = rnd.Next(availableColors.Length);
-                tagColors.Add(tag, tagIndex);
-            }
-            return availableColors[tagColors[tag]];
         }
     }
 }

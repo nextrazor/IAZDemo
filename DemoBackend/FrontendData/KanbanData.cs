@@ -32,6 +32,7 @@ namespace IAZBackend.FrontendData
         public int id { get; set; }
         public string name { get; set; } = null!;
         public string resourceGroup { get; set; } = null!;
+        public string image { get; set; } = string.Empty;
     }
 
     [Serializable]
