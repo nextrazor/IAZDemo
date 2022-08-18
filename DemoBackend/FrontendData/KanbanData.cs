@@ -46,9 +46,9 @@ namespace IAZBackend.FrontendData
         public int id { get; set; }
         public string name { get; set; } = null!;
         public string status { get; set; } = null!;
-        public string start { get; set; }
-        public string end { get; set; }
-        public TimeSpan labour { get; set; }
+        public string start { get; set; } = null!;
+        public string end { get; set; } = null!;
+        public string labour { get; set; } = null!;
         public string orderNo { get; set; } = null!;
         public string partNo { get; set; } = null!;
         public int opNo { get; set; }

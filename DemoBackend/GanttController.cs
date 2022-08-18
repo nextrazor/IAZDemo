@@ -190,7 +190,7 @@ namespace IAZBackend
 
         public ColorSelector(string[] colors) => availableColors = colors;
 
-        Dictionary<string, int> tagColors = new Dictionary<string, int>();
+        static Dictionary<string, int> tagColors = new Dictionary<string, int>();
         Random rnd = new();
 
         public string GetColor(string tag)

@@ -74,7 +74,7 @@ namespace IAZBackend
                         status = worker.SecConstraintId.ToString(),
                         start = workerOrder.StartTime!.Value.ToString("HH:mm"),
                         end = workerOrder.EndTime!.Value.ToString("HH:mm"),
-                        labour = (workerOrder.EndTime!.Value - workerOrder.StartTime!.Value),
+                        labour = (workerOrder.EndTime!.Value - workerOrder.StartTime!.Value).ToString("hh\\:mm"),
                         orderNo = workerOrder.Order.OrderNo,
                         partNo = workerOrder.Order.PartNo,
                         opNo = workerOrder.Order.OpNo,
