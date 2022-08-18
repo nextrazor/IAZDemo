@@ -78,7 +78,8 @@ namespace IAZBackend
                         orderNo = workerOrder.Order.OrderNo,
                         partNo = workerOrder.Order.PartNo,
                         opNo = workerOrder.Order.OpNo,
-                        operationName = workerOrder.Order.OperationName
+                        operationName = workerOrder.Order.OperationName,
+                        percent = workerOrder.Order.ProgressPercent
                     });
                 }
             }

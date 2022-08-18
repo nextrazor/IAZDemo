@@ -53,6 +53,7 @@ namespace IAZBackend.FrontendData
         public string partNo { get; set; } = null!;
         public int opNo { get; set; }
         public string operationName { get; set; } = null!;
+        public double percent { get; set; }
     }
 
     [Serializable]
