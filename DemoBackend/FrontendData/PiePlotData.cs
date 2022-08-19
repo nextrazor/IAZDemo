@@ -10,9 +10,9 @@
     [Serializable]
     public class PiePlotData
     {
-        public ColoredNamedValue[] data = null!;
+        public NamedValue[] data = null!;
 
-        public PiePlotData(ColoredNamedValue[] data)
+        public PiePlotData(NamedValue[] data)
         {
             this.data = data;
         }

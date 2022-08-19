@@ -1,17 +1,15 @@
 ﻿namespace IAZBackend.FrontendData
 {
     [Serializable]
-    public class ColoredNamedValue
+    public class NamedValue
     {
         public string name;
         public double value;
-        public string color;
 
-        public ColoredNamedValue(string name, double value, string color)
+        public NamedValue(string name, double value)
         {
             this.name = name;
             this.value = value;
-            this.color = color;
         }
     }
 }

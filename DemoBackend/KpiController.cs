@@ -15,7 +15,7 @@ namespace IAZBackend
             return schedOrders.Min(ord => ord.StartTime!.Value);
         }
 
-        public static ColoredNamedValue[] GetLateOrders()
+        public static NamedValue[] GetLateOrders()
         {
             using var dbContext = new IAZ_ApsContext();
             var lastOpers = dbContext.Orders
@@ -32,10 +32,10 @@ namespace IAZBackend
             int notSchedOrders = lastOpers
                 .Where(op => !op.EndTime.HasValue)
                 .Count();
-            return new ColoredNamedValue[] { new ColoredNamedValue("В срок", goodOrders, "green-3"), new ColoredNamedValue("Со срывом срока", lateOrders, "yellow-3"), new ColoredNamedValue("Не спланированы", notSchedOrders, "red-4") };
+            return new NamedValue[] { new NamedValue("В срок", goodOrders), new NamedValue("Со срывом срока", lateOrders), new NamedValue("Не спланированы", notSchedOrders) };
         }
 
-        public static ColoredNamedValue[] GetLateOpers()
+        public static NamedValue[] GetLateOpers()
         {
             using var dbContext = new IAZ_ApsContext();
             int scheduleDsId = Dataset.CurrentDataset.DatasetId;
@@ -48,7 +48,7 @@ namespace IAZBackend
             int notSchedOpers = dbContext.Orders
                 .Where(op => (op.DatasetId == scheduleDsId) && !op.EndTime.HasValue)
                 .Count();
-            return new ColoredNamedValue[] { new ColoredNamedValue("В срок", goodOpers, "green-3"), new ColoredNamedValue("Со срывом срока", lateOpers, "yellow-3"), new ColoredNamedValue("Не спланированы", notSchedOpers, "red-4") };
+            return new NamedValue[] { new NamedValue("В срок", goodOpers), new NamedValue("Со срывом срока", lateOpers), new NamedValue("Не спланированы", notSchedOpers) };
         }
 
         public static double GetMonthOee(DateTime startTime)
