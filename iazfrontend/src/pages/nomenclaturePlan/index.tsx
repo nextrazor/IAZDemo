@@ -55,7 +55,9 @@ const ListContent = ({
     </div>
     <div className={styles.listContentItem}>
       <span>Плановая дата завершения</span>
-      <p style={{ color: 'red' }}>{moment(endTime).format('YYYY-MM-DD HH:mm')}</p>
+      <p style={{ color: setColor(orderStatus) }}>
+        {endTime != null ? moment(endTime).format('YYYY-MM-DD HH:mm') : 'Не спланировано'}
+      </p>
     </div>
     <div className={styles.listContentItem}>
       <span>Количество</span>
@@ -70,6 +72,19 @@ const ListContent = ({
     </div>
   </div>
 );
+
+function setColor(name) {
+  switch (name) {
+    case 'success':
+      return 'gray';
+    case 'exception':
+      return 'red';
+    case 'active':
+      return 'green';
+    case 'normal':
+      return 'black';
+  }
+}
 
 const CustomDash: FC<AnalysisProps> = () => {
   const { loading, data } = useRequest(testData);
