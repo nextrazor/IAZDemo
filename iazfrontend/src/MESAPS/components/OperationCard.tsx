@@ -63,14 +63,14 @@ const OperationCard: FC<OperationProps> = (props: OperationProps) => {
   return (
     <Card title={props.title}>
       <Descriptions
-        column={{
-          xxl: 6,
-          xl: 6,
-          lg: 6,
-          md: 6,
-          sm: 6,
-          xs: 6,
-        }}
+        // column={{
+          // xxl: 6,
+          // xl: 6,
+          // lg: 6,
+          // md: 6,
+          // sm: 6,
+          // xs: 6,
+        // }}
         bordered
       >
         <Descriptions.Item label="Заказ" span={2}>
