@@ -11,7 +11,7 @@ namespace IAZBackend.FrontendData
         public LoadingPlotData loadingPlot;
         public PainPointData painPoints;
 
-        public KpiPageData(NamedValue[] lateOrdersData, NamedValue[] lateOpersData, double oee, LoadingValue[] loadingData, PainPoint[] pPoints)
+        public KpiPageData(ColoredNamedValue[] lateOrdersData, ColoredNamedValue[] lateOpersData, double oee, LoadingValue[] loadingData, PainPoint[] pPoints)
         {
             lateOrders = new PiePlotData(lateOrdersData);
             lateOpers = new PiePlotData(lateOpersData);
