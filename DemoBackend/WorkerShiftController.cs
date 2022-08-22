@@ -56,9 +56,9 @@ namespace IAZBackend
             if (resource == null)
                 return new List<CncLoadingData>();
             DateTime start = new DateTime(month.Year, month.Month, 1) + ShiftStart;
-            DateTime finish = start.AddMonths(1) + ShiftStart;
+            DateTime finish = start.AddMonths(1);
             var orders = resource.Orders
-                .Where(ord => (ord.StartTime > finish) && (ord.EndTime < start) && (ord.StartTime < ord.EndTime))
+                .Where(ord => (ord.StartTime < finish) && (ord.EndTime > start) && (ord.StartTime < ord.EndTime))
                 .ToList();
             List<CncLoadingData> res = new();
             DateTime day = start;
@@ -77,8 +77,8 @@ namespace IAZBackend
                 if (dayHours > 0)
                     res.Add(new CncLoadingData()
                     {
-                        date = day,
-                        hours = dayHours
+                        date = day.Date,
+                        hours = dayHours < 0.01 ? 0.01 : Math.Round(dayHours, 2),
                     });
                 day = nextDay;
             }
