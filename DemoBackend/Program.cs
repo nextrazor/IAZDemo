@@ -46,6 +46,25 @@ app.MapGet("/testData", () =>
 })
 .WithName("GetTestData");
 
+app.MapGet("/cncResources", () =>
+{
+    using IAZ_ApsContext dbContext = new();
+
+    return JsonConvert.SerializeObject(dbContext.Resources
+        .Where(res => res.FiniteOrInfinite == (int)ResourceType.Finite)
+        .Select(res => new { id = res.ResourceId, name = res.Name, InvNumber = res.Name.Substring(0, 4) })
+        .ToArray());
+})
+.WithName("GetCncResources");
+
+app.MapGet("/cncWorkerShifts/{cncInvNumber:required=2197}/{month:datetime:required=2022-07-01}", (string cncInvNumber, DateTime month) =>
+{
+    return JsonConvert.SerializeObject(WorkerShiftController.GetShiftData(cncInvNumber, month));
+})
+.WithName("GetCncWorkerShifts");
+
+
+
 app.MapGet("/demands", () =>
 {
     return $"{{\"data\":{JsonConvert.SerializeObject(DemandController.GetDemands(Dataset.CurrentDataset))}}}";
@@ -73,9 +92,9 @@ app.MapGet("/workers", () =>
 })
 .WithName("GetWorkers");
 
-app.MapGet("/calendar/{tabNumber:required=026820}/{date:datetime:required=2022-07-01}", (string tabNumber, DateTime date) =>       // 014523 018564
+app.MapGet("/calendar/{workerCode:required=026820}/{date:datetime:required=2022-07-01}", (string workerCode, DateTime date) =>       // 014523 018564
 {
-    return JsonConvert.SerializeObject(CalendarController.GetWorkerTasks(Dataset.CurrentDataset, tabNumber, date, date.AddDays(7)));
+    return JsonConvert.SerializeObject(CalendarController.GetWorkerTasks(Dataset.CurrentDataset, workerCode, date, date.AddDays(7)));
 })
 .WithName("GetCalendar");
 
