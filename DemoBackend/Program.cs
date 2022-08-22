@@ -63,7 +63,11 @@ app.MapGet("/cncWorkerShifts/{cncInvNumber:required=2197}/{month:datetime:requir
 })
 .WithName("GetCncWorkerShifts");
 
-
+app.MapGet("/cncShiftLoading/{cncInvNumber:required=2197}/{month:datetime:required=2022-07-01}", (string cncInvNumber, DateTime month) =>
+{
+    return JsonConvert.SerializeObject(WorkerShiftController.GetLoadingData(cncInvNumber, month));
+})
+.WithName("GetCncShiftLoading");
 
 app.MapGet("/demands", () =>
 {

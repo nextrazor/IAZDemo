@@ -15,4 +15,11 @@
         public int shift { get; set; }
         public double hours { get; set; }
     }
+
+    [Serializable]
+    public class CncLoadingData
+    {
+        public DateTime date { get; set; }
+        public double hours { get; set; }
+    }
 }
