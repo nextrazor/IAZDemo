@@ -5,12 +5,12 @@ namespace IAZBackend
 {
     public static class CalendarController
     {
-        public static CalendarTaskData GetWorkerTasks(Dataset currentDataset, string tabNumber, DateTime start, DateTime finish)
+        public static CalendarTaskData GetWorkerTasks(Dataset currentDataset, string workerCode, DateTime start, DateTime finish)
         {
             using IAZ_ApsContext dbContext = new();
             CalendarTaskData data = new();
             SecConstraint? worker = dbContext.SecConstraints
-                .FirstOrDefault(sc => sc.Name.StartsWith(tabNumber));
+                .FirstOrDefault(sc => sc.Name.StartsWith(workerCode));
             if (worker == null)
                 return data;
             int oscdId = 1;
