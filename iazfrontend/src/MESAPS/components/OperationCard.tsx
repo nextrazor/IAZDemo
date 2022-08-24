@@ -5,7 +5,7 @@ import './calendar.css';
 import { Statistic } from 'antd';
 import React, { useState } from 'react';
 import { Layout } from 'antd';
-
+import { Modal } from 'antd';
 const { Header, Footer, Content } = Layout;
 import { Col, Row, Card } from 'antd';
 import { Badge, Descriptions } from 'antd';
@@ -16,6 +16,12 @@ import { Document, Page, Outline, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Segmented } from 'antd';
+
+
+import { Cascader, InputNumber, Select } from 'antd';
+const { Option } = Select;
+
+import { Space, Tag, Table } from 'antd';
 import {
   CodepenOutlined,
   ReadOutlined,
@@ -28,6 +34,94 @@ import Renderer from './otherRenderer';
 
 const OperationCard: FC<OperationProps> = (props: OperationProps) => {
   const [barsVisibility, setBarsVisibility] = useState([true, false, false, false]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const selectBefore = (
+    <Select
+      defaultValue="add"
+      style={{
+        width: 60,
+      }}
+    >
+      <Option value="add">+</Option>
+      <Option value="minus">-</Option>
+    </Select>
+  );
+  const selectAfter = (
+    <Select
+      defaultValue="USD"
+      style={{
+        width: 60,
+      }}
+    >
+      <Option value="USD">$</Option>
+      <Option value="EUR">€</Option>
+      <Option value="GBP">£</Option>
+      <Option value="CNY">¥</Option>
+    </Select>
+  );
+
+  const columns = [
+    {
+      title: 'Название',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Ревизия',
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: 'Дата загрузки',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+           <Button onClick={handleOk} style={{ float: 'right', height: '65px' }}>
+              Загрузить
+            </Button>
+        </Space>
+      ),
+    },
+  ];
+  const data = [
+    {
+      key: '1',
+      name: 'Gantry345.4',
+      age: 42,
+      address: '22.08.2022',
+    },
+    {
+      key: '2',
+      name: 'Gantry319.4',
+      age: 32,
+      address: '12.03.2022'
+    },
+    {
+      key: '3',
+      name: 'Gantry289.4',
+      age: 12,
+      address: '30.09.2021'
+    },
+  ];
 
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -37,7 +131,7 @@ const OperationCard: FC<OperationProps> = (props: OperationProps) => {
     setPageNumber(1);
   }
 
-  function changePage(offset) {
+  function changePage(offset: number) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
   }
 
@@ -49,7 +143,7 @@ const OperationCard: FC<OperationProps> = (props: OperationProps) => {
     changePage(1);
   }
 
-  const deadline = Date.parse(props.operation.startDate) + 4500000000; // Moment is also OK
+  const deadline = Date.parse(props.operation.startDate) + 4800000000; // Moment is also OK
   console.log(deadline);
 
   function changeVisibility(value: SegmentedValue) {
@@ -132,7 +226,7 @@ const OperationCard: FC<OperationProps> = (props: OperationProps) => {
               icon: <CodepenOutlined />,
             },
             {
-              label: 'Конторолируемые параметры',
+              label: 'Контролируемые параметры',
               value: 4,
               icon: <FormOutlined />,
             },
@@ -150,9 +244,12 @@ const OperationCard: FC<OperationProps> = (props: OperationProps) => {
             <Button style={{ float: 'right', marginLeft: '5px', height: '65px' }} type="primary">
               Начать операцию
             </Button>
-            <Button style={{ float: 'right', height: '65px' }}>
+            <Button onClick={showModal} style={{ float: 'right', height: '65px' }}>
               Загрузить управляющую программу
             </Button>
+            <Modal title="Выбор программы" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+              <Table columns={columns} dataSource={data} />
+            </Modal>
           </div>
         </div>
         <div style={{ display: barsVisibility[1] ? 'inline-block' : 'none' }}>
@@ -169,12 +266,22 @@ const OperationCard: FC<OperationProps> = (props: OperationProps) => {
             <button type="button" disabled={pageNumber >= numPages} onClick={nextPage}>
               Next
             </button>
+            
           </div>
         </div>
         <div style={{ display: barsVisibility[2] ? 'inline-block' : 'none' }}>
           <Renderer></Renderer>
         </div>
-        <div style={{ display: barsVisibility[3] ? 'inline-block' : 'none' }}>4</div>
+        <div style={{ display: barsVisibility[3] ? 'inline-block' : 'none' }}>
+          <div style={{'width':'100%'}}>
+          <div style={{'marginTop':'10px'}}>
+          <InputNumber style={{'marginLeft':'10px'}} max={2} addonBefore={'Отклонение диаметра'} addonAfter={'мм'} defaultValue={0} /></div>
+          <div style={{'marginTop':'10px'}}><InputNumber max={4} style={{'marginLeft':'10px'}} addonBefore={'Отклонение кривизны'} addonAfter={'°'} defaultValue={0} /></div>
+          <Button style={{ position:'absolut', float: 'left', marginLeft: '10px', height: '65px', marginTop:'10px' }} type="primary">
+              Сохранить
+            </Button>
+            </div>
+        </div>
       </div>
 
       <div>

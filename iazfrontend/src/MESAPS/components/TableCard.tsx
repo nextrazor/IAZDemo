@@ -107,7 +107,7 @@ const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a style={{'visibility':setVisibility(record.navigatable)}} onClick={() => { openPainPoint(record.guid) }}>Открыть гант</a>
+          <a style={{'visibility':setVisibility(record.navigatable)} as any} onClick={() => { openPainPoint(record.guid) }}>Отобразить в планировщике</a>
         </Space>
       ),
     },
