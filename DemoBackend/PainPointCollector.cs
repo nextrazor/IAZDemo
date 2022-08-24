@@ -44,7 +44,7 @@ namespace IAZBackend
                 .AsEnumerable();
             string[] tags = new string[] { PainPointSeverity.High.ToString(), "Заказ" };
             return lateOrders
-                .Select(ord => new PainPoint(Guid.NewGuid().ToString(), tags, PainPointSeverity.High,
+                .Select(ord => new PainPoint($"{ord.OrderNo}".ToString(), tags, PainPointSeverity.High, true,
                     $"Заказ {ord.OrderNo} просрочен на {(ord.EndTime!.Value - ord.DueDate!.Value).Days} дней"))
                 .ToArray();
         }
@@ -62,7 +62,7 @@ namespace IAZBackend
                 .AsEnumerable();
             string[] tags = new string[] { PainPointSeverity.High.ToString(), "Заказ" };
             return notSchedOrderNums
-                .Select(orderNo => new PainPoint(Guid.NewGuid().ToString(), tags, PainPointSeverity.High,
+                .Select(orderNo => new PainPoint($"{orderNo}", tags, PainPointSeverity.High, false,
                     $"Заказ {orderNo} не спланирован"))
                 .ToArray();
         }
@@ -96,7 +96,7 @@ namespace IAZBackend
                 if (!oper.StartTime.HasValue)
                     break;
                 if ((prevOper != null) && (oper.StartTime.Value > prevOper!.EndTime!.Value.AddDays(X)))
-                    res.Add(new PainPoint(Guid.NewGuid().ToString(), tags, PainPointSeverity.Low,
+                    res.Add(new PainPoint($"{oper.OrderNo}", tags, PainPointSeverity.Low, true,
                         $"Заказ {oper.OrderNo} пролеживает {(oper.StartTime!.Value - prevOper!.EndTime!.Value).Days} дней после операции {prevOper!.OpNo}"));
                 prevOper = oper;
             }
@@ -110,13 +110,16 @@ namespace IAZBackend
         public string guid;
         public string[] category = null!;
         public PainPointSeverity severity;
+        public bool navigatable;
         public string message = null!;
 
-        public PainPoint(string guid, string[] category, PainPointSeverity severity, string message)
+        public PainPoint(string guid, string[] category, PainPointSeverity severity,
+            bool navigatable, string message)
         {
             this.guid = guid;
             this.category = category;
             this.severity = severity;
+            this.navigatable = navigatable;
             this.message = message;
         }
     }
