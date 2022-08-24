@@ -51,7 +51,7 @@ const CustomDash: FC<AnalysisProps> = () => {
       >
         <Col xl={12} lg={24} md={24} sm={24} xs={24}>
           <TableCard
-            title="Загрузка ресурсов"
+            title="Проблемные точки"
             data={data?.painPoints.data || []}
             loading={loading}
           />

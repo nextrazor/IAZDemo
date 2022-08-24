@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import type { ColumnProps } from '../../MESAPS/service/types';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { history } from 'umi';
 
 const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
   interface DataType {
@@ -10,6 +11,15 @@ const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
     category: string[];
     severity: number;
     message: string;
+    navigatable: boolean;
+  }
+
+  function openPainPoint(entity: string){
+    history.push('/orderGantt?order=' + entity);
+  }
+
+  function setVisibility(navigatable:boolean): string {
+    return navigatable? "initial":"collapse";
   }
 
   const columns: ColumnsType<DataType> = [
@@ -97,8 +107,7 @@ const TableCard: FC<ColumnProps> = (props: ColumnProps) => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>Invite {record.category}</a>
-          <a>Delete</a>
+          <a style={{'visibility':setVisibility(record.navigatable)}} onClick={() => { openPainPoint(record.guid) }}>Открыть гант</a>
         </Space>
       ),
     },
